@@ -3,6 +3,8 @@ package com.fenix.projecto.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -13,14 +15,15 @@ import java.io.Serializable;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Escola.findAll", query = "SELECT e FROM Escola e"),
-    @NamedQuery(name = "Escola.findByCodigoEscola", query = "SELECT e FROM Escola e WHERE e.codigo = :codigo"),
-    @NamedQuery(name = "Escola.findByNomeEscola", query = "SELECT e FROM Escola e WHERE e.nome = :nome"),
-    @NamedQuery(name = "Escola.findByEnderecoEscola", query = "SELECT e FROM Escola e WHERE e.endereco = :endereco"),
-    @NamedQuery(name = "Escola.findByBairroEscola", query = "SELECT e FROM Escola e WHERE e.bairro = :bairro"),
-    @NamedQuery(name = "Escola.findByDistritoEscola", query = "SELECT e FROM Escola e WHERE e.distrito = :distrito"),
-    @NamedQuery(name = "Escola.findByMunicipioEscola", query = "SELECT e FROM Escola e WHERE e.municipio = :municipio")})
+    @NamedQuery(name = "Escola.findByCodigo", query = "SELECT e FROM Escola e WHERE e.codigo = :codigo"),
+    @NamedQuery(name = "Escola.findByNome", query = "SELECT e FROM Escola e WHERE e.nome = :nome"),
+    @NamedQuery(name = "Escola.findByEndereco", query = "SELECT e FROM Escola e WHERE e.endereco = :endereco"),
+    @NamedQuery(name = "Escola.findByBairro", query = "SELECT e FROM Escola e WHERE e.bairro = :bairro"),
+    @NamedQuery(name = "Escola.findByDistrito", query = "SELECT e FROM Escola e WHERE e.distrito = :distrito"),
+    @NamedQuery(name = "Escola.findByMunicipio", query = "SELECT e FROM Escola e WHERE e.municipio = :municipio")})
 public class Escola implements Serializable, Comparable<Escola> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

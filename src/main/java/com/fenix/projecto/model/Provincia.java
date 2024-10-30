@@ -3,20 +3,20 @@ package com.fenix.projecto.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serial;
 import java.io.Serializable;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Entity
 @Table(name = "provincia")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p"),
-    @NamedQuery(name = "Provincia.findByCodigo", query = "SELECT p FROM Provincia p WHERE p.codigo = :codigo"),
-    @NamedQuery(name = "Provincia.findByNome", query = "SELECT p FROM Provincia p WHERE p.nome = :nome")})
+        @NamedQuery(name = "Provincia.findAll", query = "SELECT p FROM Provincia p"),
+        @NamedQuery(name = "Provincia.findByCodigo", query = "SELECT p FROM Provincia p WHERE p.codigo = :codigo"),
+        @NamedQuery(name = "Provincia.findByNome", query = "SELECT p FROM Provincia p WHERE p.nome = :nome")})
 public class Provincia implements Serializable, Comparable<Provincia> {
 
     @Serial

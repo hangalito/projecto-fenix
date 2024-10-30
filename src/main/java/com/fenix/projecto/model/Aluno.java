@@ -17,16 +17,16 @@ import java.util.List;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Aluno.findAll", query = "SELECT a FROM Aluno a"),
-    @NamedQuery(name = "Aluno.findByCodigoAluno", query = "SELECT a FROM Aluno a WHERE a.codigo = :codigo"),
-    @NamedQuery(name = "Aluno.findByNomeAluno", query = "SELECT a FROM Aluno a WHERE a.nome = :nome"),
-    @NamedQuery(name = "Aluno.findBySobrenomeAluno", query = "SELECT a FROM Aluno a WHERE a.sobrenome = :sobrenome"),
-    @NamedQuery(name = "Aluno.findByDataNascAluno", query = "SELECT a FROM Aluno a WHERE a.dataDeNascimento = :dataDeNascimento"),
-    @NamedQuery(name = "Aluno.findByTelAluno", query = "SELECT a FROM Aluno a WHERE a.telefone = :telefone"),
-    @NamedQuery(name = "Aluno.findByEmailAluno", query = "SELECT a FROM Aluno a WHERE a.email = :email"),
-    @NamedQuery(name = "Aluno.findByEnderecoAluno", query = "SELECT a FROM Aluno a WHERE a.endereco = :endereco"),
-    @NamedQuery(name = "Aluno.findByBairroAluno", query = "SELECT a FROM Aluno a WHERE a.bairro = :bairro"),
-    @NamedQuery(name = "Aluno.findByDistritoAluno", query = "SELECT a FROM Aluno a WHERE a.distrito = :distrito"),
-    @NamedQuery(name = "Aluno.findByMunicipioAluno", query = "SELECT a FROM Aluno a WHERE a.municipio = :municipio")})
+    @NamedQuery(name = "Aluno.findByCodigo", query = "SELECT a FROM Aluno a WHERE a.codigo = :codigo"),
+    @NamedQuery(name = "Aluno.findByNome", query = "SELECT a FROM Aluno a WHERE a.nome = :nome"),
+    @NamedQuery(name = "Aluno.findBySobrenome", query = "SELECT a FROM Aluno a WHERE a.sobrenome = :sobrenome"),
+    @NamedQuery(name = "Aluno.findByDataNasc", query = "SELECT a FROM Aluno a WHERE a.dataDeNascimento = :dataDeNascimento"),
+    @NamedQuery(name = "Aluno.findByTelefone", query = "SELECT a FROM Aluno a WHERE a.telefone = :telefone"),
+    @NamedQuery(name = "Aluno.findByEmail", query = "SELECT a FROM Aluno a WHERE a.email = :email"),
+    @NamedQuery(name = "Aluno.findByEndereco", query = "SELECT a FROM Aluno a WHERE a.endereco = :endereco"),
+    @NamedQuery(name = "Aluno.findByBairro", query = "SELECT a FROM Aluno a WHERE a.bairro = :bairro"),
+    @NamedQuery(name = "Aluno.findByDistrito", query = "SELECT a FROM Aluno a WHERE a.distrito = :distrito"),
+    @NamedQuery(name = "Aluno.findByMunicipio", query = "SELECT a FROM Aluno a WHERE a.municipio = :municipio")})
 public class Aluno implements Serializable, Comparable<Aluno> {
 
     @Serial

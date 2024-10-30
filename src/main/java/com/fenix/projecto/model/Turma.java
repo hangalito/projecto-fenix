@@ -3,16 +3,20 @@ package com.fenix.projecto.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Entity
 @XmlRootElement
+@NamedQueries({
+        @NamedQuery(name = "Turma.findAll", query = "SELECT t FROM Turma t"),
+        @NamedQuery(name = "Turma.findByCodigo", query = "SELECT t FROM Turma t WHERE t.codigo = :codigo")
+})
 public class Turma implements Serializable, Comparable<Turma> {
 
     @Serial

@@ -4,10 +4,10 @@ import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Embeddable
@@ -70,5 +70,5 @@ public class InscricaoPK implements Serializable {
     public String toString() {
         return "com.fenix.projecto.model.InscricaoPK[ codigoAluno=" + codigoAluno + ", codigoCurso=" + codigoCurso + " ]";
     }
-    
+
 }

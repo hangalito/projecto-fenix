@@ -3,20 +3,20 @@ package com.fenix.projecto.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serial;
 import java.io.Serializable;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Entity
 @Table(name = "formacao_aluno")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FormacaoAluno.findAll", query = "SELECT f FROM FormacaoAluno f"),
-    @NamedQuery(name = "FormacaoAluno.findByCodigoFormacao", query = "SELECT f FROM FormacaoAluno f WHERE f.codigo = :codigo"),
-    @NamedQuery(name = "FormacaoAluno.findByNomeFormacao", query = "SELECT f FROM FormacaoAluno f WHERE f.nome = :nome")})
+        @NamedQuery(name = "FormacaoAluno.findAll", query = "SELECT f FROM FormacaoAluno f"),
+        @NamedQuery(name = "FormacaoAluno.findByCodigo", query = "SELECT f FROM FormacaoAluno f WHERE f.codigo = :codigo"),
+        @NamedQuery(name = "FormacaoAluno.findByNome", query = "SELECT f FROM FormacaoAluno f WHERE f.nome = :nome")})
 public class FormacaoAluno implements Serializable, Comparable<FormacaoAluno> {
 
     @Serial
@@ -27,6 +27,7 @@ public class FormacaoAluno implements Serializable, Comparable<FormacaoAluno> {
     @Basic(optional = false)
     @Column(name = "codigo_formacao")
     private Integer codigo;
+
     @Size(max = 45)
     @Column(name = "nome_formacao")
     private String nome;

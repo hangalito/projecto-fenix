@@ -16,9 +16,9 @@ import java.util.List;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Curso.findAll", query = "SELECT c FROM Curso c"),
-    @NamedQuery(name = "Curso.findByCodigoCurso", query = "SELECT c FROM Curso c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "Curso.findByNomeCurso", query = "SELECT c FROM Curso c WHERE c.nome = :nome"),
-    @NamedQuery(name = "Curso.findByPrecoCurso", query = "SELECT c FROM Curso c WHERE c.preco = :preco")})
+    @NamedQuery(name = "Curso.findByCodigo", query = "SELECT c FROM Curso c WHERE c.codigo = :codigo"),
+    @NamedQuery(name = "Curso.findByNome", query = "SELECT c FROM Curso c WHERE c.nome = :nome"),
+    @NamedQuery(name = "Curso.findByPreco", query = "SELECT c FROM Curso c WHERE c.preco = :preco")})
 public class Curso implements Serializable, Comparable<Curso> {
 
     @Serial

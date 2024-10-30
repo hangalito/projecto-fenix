@@ -4,26 +4,27 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Entity
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Professor.findAll", query = "SELECT p FROM Professor p"),
-    @NamedQuery(name = "Professor.findByCodgoProfessor", query = "SELECT p FROM Professor p WHERE p.codigo = :codigo"),
-    @NamedQuery(name = "Professor.findByNomeProfessor", query = "SELECT p FROM Professor p WHERE p.nome = :nome"),
-    @NamedQuery(name = "Professor.findBySobrenomeProfessor", query = "SELECT p FROM Professor p WHERE p.sobrenome = :sobrenome"),
-    @NamedQuery(name = "Professor.findByDataNascProfessor", query = "SELECT p FROM Professor p WHERE p.dataDeNascimento = :dataDeNascimento"),
-    @NamedQuery(name = "Professor.findByEnderecoProfessor", query = "SELECT p FROM Professor p WHERE p.endereco = :endereco"),
-    @NamedQuery(name = "Professor.findByBairroProfessor", query = "SELECT p FROM Professor p WHERE p.bairro = :bairro"),
-    @NamedQuery(name = "Professor.findByDistritoProfessor", query = "SELECT p FROM Professor p WHERE p.distrito = :distrito"),
-    @NamedQuery(name = "Professor.findByMunicipioProfessor", query = "SELECT p FROM Professor p WHERE p.municipio = :municipio")})
+        @NamedQuery(name = "Professor.findAll", query = "SELECT p FROM Professor p"),
+        @NamedQuery(name = "Professor.findByCodgo", query = "SELECT p FROM Professor p WHERE p.codigo = :codigo"),
+        @NamedQuery(name = "Professor.findByNome", query = "SELECT p FROM Professor p WHERE p.nome = :nome"),
+        @NamedQuery(name = "Professor.findBySobrenome", query = "SELECT p FROM Professor p WHERE p.sobrenome = :sobrenome"),
+        @NamedQuery(name = "Professor.findByDataNasc", query = "SELECT p FROM Professor p WHERE p.dataDeNascimento = :dataDeNascimento"),
+        @NamedQuery(name = "Professor.findByEndereco", query = "SELECT p FROM Professor p WHERE p.endereco = :endereco"),
+        @NamedQuery(name = "Professor.findByBairro", query = "SELECT p FROM Professor p WHERE p.bairro = :bairro"),
+        @NamedQuery(name = "Professor.findByDistrito", query = "SELECT p FROM Professor p WHERE p.distrito = :distrito"),
+        @NamedQuery(name = "Professor.findByMunicipio", query = "SELECT p FROM Professor p WHERE p.municipio = :municipio")})
 public class Professor implements Serializable, Comparable<Professor> {
 
     @Serial
@@ -70,6 +71,10 @@ public class Professor implements Serializable, Comparable<Professor> {
     @JoinColumn(name = "codigo_provincia", referencedColumnName = "codigo_provincia")
     @ManyToOne(fetch = FetchType.LAZY)
     private Provincia provincia;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "codigo_professor", referencedColumnName = "codigo_professor")
+    private List<Turma> turmas;
 
     public Professor() {
     }
@@ -154,6 +159,14 @@ public class Professor implements Serializable, Comparable<Professor> {
 
     public void setProvincia(Provincia provincia) {
         this.provincia = provincia;
+    }
+
+    public List<Turma> getTurmas() {
+        return turmas;
+    }
+
+    public void setTurmas(List<Turma> turmas) {
+        this.turmas = turmas;
     }
 
     @Override

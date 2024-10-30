@@ -2,23 +2,23 @@ package com.fenix.projecto.model;
 
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Entity
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Inscricao.findAll", query = "SELECT i FROM Inscricao i"),
-    @NamedQuery(name = "Inscricao.findByCodigoAluno", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoAluno = :codigoAluno"),
-    @NamedQuery(name = "Inscricao.findByCodigoCurso", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoCurso = :codigoCurso"),
-    @NamedQuery(name = "Inscricao.findByDataInscricao", query = "SELECT i FROM Inscricao i WHERE i.data = :data"),
-    @NamedQuery(name = "Inscricao.findByValorPago", query = "SELECT i FROM Inscricao i WHERE i.valorPago = :valorPago"),
-    @NamedQuery(name = "Inscricao.findByPagamentoPendente", query = "SELECT i FROM Inscricao i WHERE i.pendente = :pendente")})
+        @NamedQuery(name = "Inscricao.findAll", query = "SELECT i FROM Inscricao i"),
+        @NamedQuery(name = "Inscricao.findByCodigoAluno", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoAluno = :codigoAluno"),
+        @NamedQuery(name = "Inscricao.findByCodigoCurso", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoCurso = :codigoCurso"),
+        @NamedQuery(name = "Inscricao.findByDataDeInscricao", query = "SELECT i FROM Inscricao i WHERE i.data = :data"),
+        @NamedQuery(name = "Inscricao.findByValorPago", query = "SELECT i FROM Inscricao i WHERE i.valorPago = :valorPago"),
+        @NamedQuery(name = "Inscricao.findPagamentoPendente", query = "SELECT i FROM Inscricao i WHERE i.pendente = :pendente")})
 public class Inscricao implements Serializable, Comparable<Inscricao> {
 
     @Serial
@@ -141,7 +141,6 @@ public class Inscricao implements Serializable, Comparable<Inscricao> {
     public int compareTo(Inscricao o) {
         return data.compareTo(o.data);
     }
-    
-    
+
 
 }
