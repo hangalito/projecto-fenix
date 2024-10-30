@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Bartolomeu Hangalo
  */
 @Entity
+@Table(name = "escola")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Escola.findAll", query = "SELECT e FROM Escola e"),

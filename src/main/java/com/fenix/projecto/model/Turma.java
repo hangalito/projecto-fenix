@@ -12,6 +12,7 @@ import java.util.Date;
  * @author Bartolomeu Hangalo
  */
 @Entity
+@Table(name = "turma")
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Turma.findAll", query = "SELECT t FROM Turma t"),

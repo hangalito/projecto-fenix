@@ -11,6 +11,7 @@ import java.util.Date;
  * @author Bartolomeu Hangalo
  */
 @Entity
+@Table(name = "inscricao")
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Inscricao.findAll", query = "SELECT i FROM Inscricao i"),

@@ -14,6 +14,7 @@ import java.util.List;
  * @author Bartolomeu Hangalo
  */
 @Entity
+@Table(name = "professor")
 @XmlRootElement
 @NamedQueries({
         @NamedQuery(name = "Professor.findAll", query = "SELECT p FROM Professor p"),

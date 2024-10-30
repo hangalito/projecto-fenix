@@ -13,6 +13,7 @@ import java.util.List;
  * @author Bartolomeu Hangalo
  */
 @Entity
+@Table(name = "curso")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Curso.findAll", query = "SELECT c FROM Curso c"),
@@ -40,6 +41,9 @@ public class Curso implements Serializable, Comparable<Curso> {
     @NotNull
     @Column(name = "preco_curso")
     private Double preco;
+
+    @Column(name = "eliminado")
+    private Boolean deleted;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "curso", fetch = FetchType.LAZY)
     private List<Inscricao> inscricoes;
@@ -79,6 +83,14 @@ public class Curso implements Serializable, Comparable<Curso> {
 
     public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public List<Inscricao> getInscricoes() {
