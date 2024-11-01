@@ -25,56 +25,27 @@
                             <f:facet name="start">
                                 <p:graphicImage name="images/fenix-logo.svg" library="showcase" />
                             </f:facet>
-                            
-                            <p:submenu label="Dashboard" icon="pi pi-fw pi-chart-bar">
-                                <p:submenu label="New" icon="pi pi-fw pi-plus">
-                                    <p:menuitem value="Bookmark" icon="pi pi-fw pi-bookmark"/>
-                                    <p:menuitem value="Video" icon="pi pi-fw pi-video"/>
-                                </p:submenu>
-                                <p:menuitem value="Delete" icon="pi pi-fw pi-trash"/>
-                                <p:divider />
-                                <p:menuitem value="Export" icon="pi pi-fw pi-external-link"/>
-                                <p:menuitem value="Duplicate" icon="pi pi-fw pi-copy" disabled="true"/>
-                            </p:submenu>
 
-                            <p:submenu label="Alunos" icon="pi pi-fw pi-user">
-                                <p:menuitem value="Cadastrar" icon="pi pi-fw pi-user-plus"/>
-                                <p:menuitem value="Listar" icon="pi pi-fw pi-userss" url="alunos.faces" />
-                                <p:submenu label="Pesquisar" icon="pi pi-fw pi-users">
-                                    <p:submenu label="Filter" icon="pi pi-fw pi-filter">
-                                        <p:menuitem value="Print" icon="pi pi-fw pi-print"/>
-                                    </p:submenu>
-                                    <p:menuitem value="List" icon="pi pi-fw pi-bars"/>
-                                </p:submenu>
-                            </p:submenu>
+                            <p:menuitem value="Dashboard" icon="pi pi-fw pi-chart-bar"/>
 
-                            <p:submenu label="Cursos" icon="pi pi-fw pi-book">
-                                <p:menuitem value="Adicionar" icon="pi pi-fw pi-plus"/>
-                                <p:menuitem value="Listar" icon="pi pi-fw pi-list" url="cursos.faces"/>
-                                <p:menuitem value="Pesquisar" icon="pi pi-fw pi-search"/>
-                            </p:submenu>
+                            <p:menuitem value="Alunos" icon="pi pi-fw pi-user" url="alunos.faces"/>
 
-                            <p:submenu label="Turmas" icon="pi pi-fw pi-th-large">
-                                <p:menuitem value="Adicionar" icon="pi pi-fw pi-plus"/>
-                                <p:menuitem value="Listar" icon="pi pi-fw pi-list" url="turmas.faces"/>
-                                <p:submenu label="Edit" icon="pi pi-fw pi-pencil">
-                                    <p:menuitem value="Save" icon="pi pi-fw pi-calendar-plus"/>
-                                    <p:menuitem value="Delete" icon="pi pi-fw pi-calendar-minus"/>
-                                </p:submenu>
-                                <p:submenu label="Arquivo" icon="pi pi-fw pi-calendar-times">
-                                    <p:menuitem value="Turmas arquivadas" icon="pi pi-fw pi-calendar-minus"/>
-                                </p:submenu>
-                            </p:submenu>
+                            <p:menuitem value="Cursos" icon="pi pi-book" url="cursos.faces"/>
+
+                            <p:menuitem value="Turmas" icon="pi pi-fw pi-th-large" url="turmas.faces"/>
 
                             <p:divider layout="vertical"/>
 
                             <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
 
                             <f:facet name="end">
+                                <!--TODO: enable global search -->
+                                <!--
                                 <div class="ui-input-icon-left mr-2">
                                     <i class="pi pi-fw pi-search" />
                                     <p:inputText placeholder="Search"/>
                                 </div>
+                                -->
                                 <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
                             </f:facet>
                         </p:menubar>
