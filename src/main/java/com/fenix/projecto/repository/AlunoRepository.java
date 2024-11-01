@@ -47,21 +47,13 @@ public class AlunoRepository implements Repository<Aluno, Integer> {
     @Transactional
     @Override
     public Aluno update(Aluno e) {
-//        findById(e.getCodigo()).ifPresent((Aluno aluno) -> {
-//            aluno.setNome(e.getNome());
-//            aluno.setSobrenome(e.getSobrenome());
-//            aluno.setDataDeNascimento(e.getDataDeNascimento());
-//            aluno.setTelefone(e.getTelefone());
-//            aluno.setEmail(e.getEmail());
-//            aluno.setEndereco(e.getEndereco());
-//            aluno.setBairro(e.getBairro());
-//            aluno.setDistrito(e.getDistrito());
-//            aluno.setProvincia(e.getProvincia());
-//            aluno.setEscola(e.getEscola());
-//            em.merge(aluno);
-//        });
-//        return e;
         return em.merge(e);
+    }
+
+    @Override
+    public void delete(Aluno e) {
+        e.setDeleted(true);
+        update(e);
     }
 
 }

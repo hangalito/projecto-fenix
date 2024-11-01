@@ -14,7 +14,7 @@ import java.util.Optional;
  * @author Bartolomeu Hangalo
  */
 @Stateless
-public class ProfessorRepository<E, ID> implements Repository<Professor, Integer> {
+public class ProfessorRepository implements Repository<Professor, Integer> {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
@@ -49,4 +49,11 @@ public class ProfessorRepository<E, ID> implements Repository<Professor, Integer
     public Professor update(Professor e) {
         return em.merge(e);
     }
+
+    @Override
+    public void delete(Professor e) {
+        e.setDeleted(true);
+        update(e);
+    }
+
 }

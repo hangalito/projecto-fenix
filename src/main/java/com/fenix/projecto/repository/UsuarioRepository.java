@@ -69,4 +69,11 @@ public class UsuarioRepository implements Repository<Usuario, Integer> {
         return em.createNamedQuery("Usuario.findViewers", Usuario.class)
                 .getResultList();
     }
+
+    @Override
+    public void delete(Usuario e) {
+        e.setDeleted(true);
+        update(e);
+    }
+
 }

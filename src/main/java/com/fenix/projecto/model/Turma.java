@@ -15,13 +15,13 @@ import java.util.Date;
 @Table(name = "turma")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Turma.findAll", query = "SELECT t FROM Turma t"),
-        @NamedQuery(name = "Turma.findByCodigo", query = "SELECT t FROM Turma t WHERE t.codigo = :codigo")
+    @NamedQuery(name = "Turma.findAll", query = "SELECT t FROM Turma t WHERE t.deleted = false"),
+    @NamedQuery(name = "Turma.findByCodigo", query = "SELECT t FROM Turma t WHERE t.codigo = :codigo AND t.deleted = false")
 })
 public class Turma implements Serializable, Comparable<Turma> {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +47,9 @@ public class Turma implements Serializable, Comparable<Turma> {
     @JoinColumn(name = "codigo_professor", referencedColumnName = "codgo_professor")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Professor professor;
+
+    @Column(name = "eliminado")
+    private Boolean deleted;
 
     public Turma() {
     }
@@ -101,6 +104,14 @@ public class Turma implements Serializable, Comparable<Turma> {
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

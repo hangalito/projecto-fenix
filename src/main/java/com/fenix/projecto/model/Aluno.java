@@ -17,21 +17,21 @@ import java.util.List;
 @Table(name = "aluno")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Aluno.findAll", query = "SELECT a FROM Aluno a"),
-    @NamedQuery(name = "Aluno.findByCodigo", query = "SELECT a FROM Aluno a WHERE a.codigo = :codigo"),
+    @NamedQuery(name = "Aluno.findAll", query = "SELECT a FROM Aluno a where a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByCodigo", query = "SELECT a FROM Aluno a WHERE a.codigo = :codigo and a.deleted = false"),
     @NamedQuery(name = "Aluno.findByNome", query = "SELECT a FROM Aluno a WHERE a.nome = :nome"),
-    @NamedQuery(name = "Aluno.findBySobrenome", query = "SELECT a FROM Aluno a WHERE a.sobrenome = :sobrenome"),
-    @NamedQuery(name = "Aluno.findByDataNasc", query = "SELECT a FROM Aluno a WHERE a.dataDeNascimento = :dataDeNascimento"),
-    @NamedQuery(name = "Aluno.findByTelefone", query = "SELECT a FROM Aluno a WHERE a.telefone = :telefone"),
-    @NamedQuery(name = "Aluno.findByEmail", query = "SELECT a FROM Aluno a WHERE a.email = :email"),
-    @NamedQuery(name = "Aluno.findByEndereco", query = "SELECT a FROM Aluno a WHERE a.endereco = :endereco"),
-    @NamedQuery(name = "Aluno.findByBairro", query = "SELECT a FROM Aluno a WHERE a.bairro = :bairro"),
-    @NamedQuery(name = "Aluno.findByDistrito", query = "SELECT a FROM Aluno a WHERE a.distrito = :distrito"),
-    @NamedQuery(name = "Aluno.findByMunicipio", query = "SELECT a FROM Aluno a WHERE a.municipio = :municipio")})
+    @NamedQuery(name = "Aluno.findBySobrenome", query = "SELECT a FROM Aluno a WHERE a.sobrenome = :sobrenome and a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByDataNasc", query = "SELECT a FROM Aluno a WHERE a.dataDeNascimento = :dataDeNascimento and  a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByTelefone", query = "SELECT a FROM Aluno a WHERE a.telefone = :telefone and a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByEmail", query = "SELECT a FROM Aluno a WHERE a.email = :email and a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByEndereco", query = "SELECT a FROM Aluno a WHERE a.endereco = :endereco and a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByBairro", query = "SELECT a FROM Aluno a WHERE a.bairro = :bairro and a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByDistrito", query = "SELECT a FROM Aluno a WHERE a.distrito = :distrito and a.deleted = false"),
+    @NamedQuery(name = "Aluno.findByMunicipio", query = "SELECT a FROM Aluno a WHERE a.municipio = :municipio and a.deleted = false")})
 public class Aluno implements Serializable, Comparable<Aluno> {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,6 +93,9 @@ public class Aluno implements Serializable, Comparable<Aluno> {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "aluno", fetch = FetchType.LAZY)
     private List<Inscricao> inscricoes;
+
+    @Column(name = "eliminado", nullable = false)
+    private Boolean deleted;
 
     public Aluno() {
     }
@@ -217,6 +220,14 @@ public class Aluno implements Serializable, Comparable<Aluno> {
 
     public void setInscricoes(List<Inscricao> inscricoes) {
         this.inscricoes = inscricoes;
+    }
+
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

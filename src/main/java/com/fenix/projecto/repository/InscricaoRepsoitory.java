@@ -16,7 +16,7 @@ import java.util.Optional;
  * @author Bartolomeu Hangalo
  */
 @Stateless
-public class InscricaoRepsoitory<E, ID> implements Repository<Inscricao, InscricaoPK> {
+public class InscricaoRepsoitory implements Repository<Inscricao, InscricaoPK> {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
@@ -50,4 +50,11 @@ public class InscricaoRepsoitory<E, ID> implements Repository<Inscricao, Inscric
     public Inscricao update(Inscricao e) {
         return em.merge(e);
     }
+
+    @Override
+    public void delete(Inscricao e) {
+        e.setDeleted(true);
+        update(e);
+    }
+
 }

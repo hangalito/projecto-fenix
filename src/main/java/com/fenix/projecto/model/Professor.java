@@ -17,19 +17,19 @@ import java.util.List;
 @Table(name = "professor")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Professor.findAll", query = "SELECT p FROM Professor p"),
-        @NamedQuery(name = "Professor.findByCodgo", query = "SELECT p FROM Professor p WHERE p.codigo = :codigo"),
-        @NamedQuery(name = "Professor.findByNome", query = "SELECT p FROM Professor p WHERE p.nome = :nome"),
-        @NamedQuery(name = "Professor.findBySobrenome", query = "SELECT p FROM Professor p WHERE p.sobrenome = :sobrenome"),
-        @NamedQuery(name = "Professor.findByDataNasc", query = "SELECT p FROM Professor p WHERE p.dataDeNascimento = :dataDeNascimento"),
-        @NamedQuery(name = "Professor.findByEndereco", query = "SELECT p FROM Professor p WHERE p.endereco = :endereco"),
-        @NamedQuery(name = "Professor.findByBairro", query = "SELECT p FROM Professor p WHERE p.bairro = :bairro"),
-        @NamedQuery(name = "Professor.findByDistrito", query = "SELECT p FROM Professor p WHERE p.distrito = :distrito"),
-        @NamedQuery(name = "Professor.findByMunicipio", query = "SELECT p FROM Professor p WHERE p.municipio = :municipio")})
+    @NamedQuery(name = "Professor.findAll", query = "SELECT p FROM Professor p WHERE p.deleted = false"),
+    @NamedQuery(name = "Professor.findByCodgo", query = "SELECT p FROM Professor p WHERE p.codigo = :codigo AND p.deleted = false"),
+    @NamedQuery(name = "Professor.findByNome", query = "SELECT p FROM Professor p WHERE p.nome = :nome AND p.deleted = false"),
+    @NamedQuery(name = "Professor.findBySobrenome", query = "SELECT p FROM Professor p WHERE p.sobrenome = :sobrenome AND p.deleted = false"),
+    @NamedQuery(name = "Professor.findByDataNasc", query = "SELECT p FROM Professor p WHERE p.dataDeNascimento = :dataDeNascimento and p.deleted = false"),
+    @NamedQuery(name = "Professor.findByEndereco", query = "SELECT p FROM Professor p WHERE p.endereco = :endereco AND p.deleted = false"),
+    @NamedQuery(name = "Professor.findByBairro", query = "SELECT p FROM Professor p WHERE p.bairro = :bairro AND p.deleted = false"),
+    @NamedQuery(name = "Professor.findByDistrito", query = "SELECT p FROM Professor p WHERE p.distrito = :distrito AND p.deleted = false"),
+    @NamedQuery(name = "Professor.findByMunicipio", query = "SELECT p FROM Professor p WHERE p.municipio = :municipio AND p.deleted = false")})
 public class Professor implements Serializable, Comparable<Professor> {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,8 +74,11 @@ public class Professor implements Serializable, Comparable<Professor> {
     private Provincia provincia;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codigo_professor", referencedColumnName = "codigo_professor")
+    @JoinColumn(name = "codigo_professor")
     private List<Turma> turmas;
+
+    @Column(name = "eliminado")
+    private Boolean deleted;
 
     public Professor() {
     }
@@ -168,6 +171,14 @@ public class Professor implements Serializable, Comparable<Professor> {
 
     public void setTurmas(List<Turma> turmas) {
         this.turmas = turmas;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

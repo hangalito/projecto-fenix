@@ -50,4 +50,9 @@ public class EscolaRepository implements Repository<Escola, Integer> {
         return em.merge(e);
     }
 
+    @Override
+    public void delete(Escola e) {
+        
+    }
+
 }

@@ -15,17 +15,17 @@ import java.io.Serializable;
 @Table(name = "escola")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Escola.findAll", query = "SELECT e FROM Escola e"),
-    @NamedQuery(name = "Escola.findByCodigo", query = "SELECT e FROM Escola e WHERE e.codigo = :codigo"),
-    @NamedQuery(name = "Escola.findByNome", query = "SELECT e FROM Escola e WHERE e.nome = :nome"),
-    @NamedQuery(name = "Escola.findByEndereco", query = "SELECT e FROM Escola e WHERE e.endereco = :endereco"),
-    @NamedQuery(name = "Escola.findByBairro", query = "SELECT e FROM Escola e WHERE e.bairro = :bairro"),
-    @NamedQuery(name = "Escola.findByDistrito", query = "SELECT e FROM Escola e WHERE e.distrito = :distrito"),
-    @NamedQuery(name = "Escola.findByMunicipio", query = "SELECT e FROM Escola e WHERE e.municipio = :municipio")})
+    @NamedQuery(name = "Escola.findAll", query = "SELECT e FROM Escola e WHERE e.deleted = false"),
+    @NamedQuery(name = "Escola.findByCodigo", query = "SELECT e FROM Escola e WHERE e.codigo = :codigo and e.deleted = false"),
+    @NamedQuery(name = "Escola.findByNome", query = "SELECT e FROM Escola e WHERE e.nome = :nome and e.deleted = false"),
+    @NamedQuery(name = "Escola.findByEndereco", query = "SELECT e FROM Escola e WHERE e.endereco = :endereco and e.deleted = false"),
+    @NamedQuery(name = "Escola.findByBairro", query = "SELECT e FROM Escola e WHERE e.bairro = :bairro and e.deleted = false"),
+    @NamedQuery(name = "Escola.findByDistrito", query = "SELECT e FROM Escola e WHERE e.distrito = :distrito and e.deleted = false"),
+    @NamedQuery(name = "Escola.findByMunicipio", query = "SELECT e FROM Escola e WHERE e.municipio = :municipio and e.deleted = false")})
 public class Escola implements Serializable, Comparable<Escola> {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +56,9 @@ public class Escola implements Serializable, Comparable<Escola> {
     @JoinColumn(name = "codigo_provincia", referencedColumnName = "codigo_provincia")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Provincia provincias;
+
+    @Column(name = "eliminado", nullable = false)
+    private Boolean deleted;
 
     public Escola() {
     }
@@ -119,6 +122,14 @@ public class Escola implements Serializable, Comparable<Escola> {
 
     public void setProvincias(Provincia provincias) {
         this.provincias = provincias;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

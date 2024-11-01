@@ -8,7 +8,6 @@ import jakarta.inject.Named;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import org.primefaces.PrimeFaces;
@@ -21,18 +20,12 @@ import org.primefaces.PrimeFaces;
 @SessionScoped
 public class CursoBean implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     @Inject
     private CursoRepository repo;
     private List<Curso> courses;
     private Curso selectedCourse;
     private List<Curso> selectedCourses;
 
-    /**
-     * Creates a new instance of CursoBean
-     */
     public CursoBean() {
     }
 
@@ -82,7 +75,7 @@ public class CursoBean implements Serializable {
         PrimeFaces.current().ajax().update(":main:dt-courses");
     }
 
-    private final void loadCourses() {
+    private void loadCourses() {
         this.courses = repo.findAll();
     }
 

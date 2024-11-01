@@ -14,13 +14,13 @@ import java.io.Serializable;
 @Table(name = "formacao_aluno")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "FormacaoAluno.findAll", query = "SELECT f FROM FormacaoAluno f"),
-        @NamedQuery(name = "FormacaoAluno.findByCodigo", query = "SELECT f FROM FormacaoAluno f WHERE f.codigo = :codigo"),
-        @NamedQuery(name = "FormacaoAluno.findByNome", query = "SELECT f FROM FormacaoAluno f WHERE f.nome = :nome")})
+    @NamedQuery(name = "FormacaoAluno.findAll", query = "SELECT f FROM FormacaoAluno f WHERE f.deleted = false"),
+    @NamedQuery(name = "FormacaoAluno.findByCodigo", query = "SELECT f FROM FormacaoAluno f WHERE f.codigo = :codigo and f.deleted = false"),
+    @NamedQuery(name = "FormacaoAluno.findByNome", query = "SELECT f FROM FormacaoAluno f WHERE f.nome = :nome and f.deleted = false")})
 public class FormacaoAluno implements Serializable, Comparable<FormacaoAluno> {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,9 @@ public class FormacaoAluno implements Serializable, Comparable<FormacaoAluno> {
     @Size(max = 45)
     @Column(name = "nome_formacao")
     private String nome;
+
+    @Column(name = "eliminado")
+    private Boolean deleted;
 
     public FormacaoAluno() {
     }
@@ -54,6 +57,14 @@ public class FormacaoAluno implements Serializable, Comparable<FormacaoAluno> {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

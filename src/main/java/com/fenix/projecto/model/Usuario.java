@@ -17,19 +17,19 @@ import java.util.Date;
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
-        @NamedQuery(name = "Usuario.findByCodigo", query = "SELECT u FROM Usuario u WHERE u.codigo = :codigo"),
-        @NamedQuery(name = "Usuario.findByNome", query = "SELECT u FROM Usuario u WHERE u.nome = :nome"),
-        @NamedQuery(name = "Usuario.findBySobrenome", query = "SELECT u FROM Usuario u WHERE u.sobrenome = :sobrenome"),
-        @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username"),
-        @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
-        @NamedQuery(name = "Usuario.findByCreateTime", query = "SELECT u FROM Usuario u WHERE u.createTime = :createTime"),
-        @NamedQuery(name = "Usuario.findAdmins", query = "SELECT u FROM Usuario u WHERE u.admin = true"),
-        @NamedQuery(name = "Usuario.findViewers", query = "SELECT u FROM Usuario u  WHERE u.viewer = true")})
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u WHERE u.deleted = false"),
+    @NamedQuery(name = "Usuario.findByCodigo", query = "SELECT u FROM Usuario u WHERE u.codigo = :codigo AND u.deleted = false"),
+    @NamedQuery(name = "Usuario.findByNome", query = "SELECT u FROM Usuario u WHERE u.nome = :nome AND u.deleted = false"),
+    @NamedQuery(name = "Usuario.findBySobrenome", query = "SELECT u FROM Usuario u WHERE u.sobrenome = :sobrenome AND u.deleted = false"),
+    @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username AND u.deleted = false"),
+    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email AND u.deleted = false"),
+    @NamedQuery(name = "Usuario.findByCreateTime", query = "SELECT u FROM Usuario u WHERE u.createTime = :createTime AND u.deleted = false"),
+    @NamedQuery(name = "Usuario.findAdmins", query = "SELECT u FROM Usuario u WHERE u.admin = true AND u.deleted = false"),
+    @NamedQuery(name = "Usuario.findViewers", query = "SELECT u FROM Usuario u  WHERE u.viewer = true AND u.deleted = false")})
 public class Usuario implements Serializable, Comparable<Usuario> {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,6 +71,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
     @Column(name = "viewer")
     private Boolean viewer;
+
+    @Column(name = "eliminado")
+    private Boolean deleted;
 
     public Usuario() {
     }
@@ -157,6 +160,14 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
     public void setViewer(Boolean viewer) {
         this.viewer = viewer;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

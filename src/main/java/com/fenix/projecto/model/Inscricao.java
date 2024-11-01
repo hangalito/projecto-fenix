@@ -14,16 +14,16 @@ import java.util.Date;
 @Table(name = "inscricao")
 @XmlRootElement
 @NamedQueries({
-        @NamedQuery(name = "Inscricao.findAll", query = "SELECT i FROM Inscricao i"),
-        @NamedQuery(name = "Inscricao.findByCodigoAluno", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoAluno = :codigoAluno"),
-        @NamedQuery(name = "Inscricao.findByCodigoCurso", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoCurso = :codigoCurso"),
-        @NamedQuery(name = "Inscricao.findByDataDeInscricao", query = "SELECT i FROM Inscricao i WHERE i.data = :data"),
-        @NamedQuery(name = "Inscricao.findByValorPago", query = "SELECT i FROM Inscricao i WHERE i.valorPago = :valorPago"),
-        @NamedQuery(name = "Inscricao.findPagamentoPendente", query = "SELECT i FROM Inscricao i WHERE i.pendente = :pendente")})
+    @NamedQuery(name = "Inscricao.findAll", query = "SELECT i FROM Inscricao i where i.deleted = false"),
+    @NamedQuery(name = "Inscricao.findByCodigoAluno", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoAluno = :codigoAluno and i.deleted = false"),
+    @NamedQuery(name = "Inscricao.findByCodigoCurso", query = "SELECT i FROM Inscricao i WHERE i.inscricaoPK.codigoCurso = :codigoCurso and i.deleted = false"),
+    @NamedQuery(name = "Inscricao.findByDataDeInscricao", query = "SELECT i FROM Inscricao i WHERE i.data = :data and i.deleted = false"),
+    @NamedQuery(name = "Inscricao.findByValorPago", query = "SELECT i FROM Inscricao i WHERE i.valorPago = :valorPago and i.deleted = false"),
+    @NamedQuery(name = "Inscricao.findPagamentoPendente", query = "SELECT i FROM Inscricao i WHERE i.pendente = :pendente and i.deleted = false")})
 public class Inscricao implements Serializable, Comparable<Inscricao> {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @EmbeddedId
     private InscricaoPK inscricaoPK;
@@ -49,6 +49,9 @@ public class Inscricao implements Serializable, Comparable<Inscricao> {
     @JoinColumn(name = "codigo_turma", referencedColumnName = "codigo_turma")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Turma turma;
+
+    @Column(name = "eliminado")
+    private Boolean deleted;
 
     public Inscricao() {
     }
@@ -124,6 +127,14 @@ public class Inscricao implements Serializable, Comparable<Inscricao> {
         return hash;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof Inscricao)) {
@@ -142,6 +153,5 @@ public class Inscricao implements Serializable, Comparable<Inscricao> {
     public int compareTo(Inscricao o) {
         return data.compareTo(o.data);
     }
-
 
 }

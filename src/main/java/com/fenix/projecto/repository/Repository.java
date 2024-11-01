@@ -22,4 +22,6 @@ public interface Repository<E, ID> {
 
     E update(E e);
 
+    void delete(E e);
+
 }

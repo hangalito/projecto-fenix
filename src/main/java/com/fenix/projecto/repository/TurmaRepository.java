@@ -36,8 +36,8 @@ public class TurmaRepository implements Repository<Turma, Integer> {
 
     @Override
     public Turma save(Turma e) {
-         em.persist(e);
-         return e;
+        em.persist(e);
+        return e;
     }
 
     @Override
@@ -50,4 +50,11 @@ public class TurmaRepository implements Repository<Turma, Integer> {
     public Turma update(Turma e) {
         return em.merge(e);
     }
+
+    @Override
+    public void delete(Turma e) {
+        e.setDeleted(true);
+        update(e);
+    }
+
 }
