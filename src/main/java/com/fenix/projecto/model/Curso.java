@@ -16,10 +16,10 @@ import java.util.List;
 @Table(name = "curso")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Curso.findAll", query = "SELECT c FROM Curso c"),
-    @NamedQuery(name = "Curso.findByCodigo", query = "SELECT c FROM Curso c WHERE c.codigo = :codigo"),
-    @NamedQuery(name = "Curso.findByNome", query = "SELECT c FROM Curso c WHERE c.nome = :nome"),
-    @NamedQuery(name = "Curso.findByPreco", query = "SELECT c FROM Curso c WHERE c.preco = :preco")})
+    @NamedQuery(name = "Curso.findAll", query = "SELECT c FROM Curso c where c.deleted = false"),
+    @NamedQuery(name = "Curso.findByCodigo", query = "SELECT c FROM Curso c WHERE c.codigo = :codigo and c.deleted = false"),
+    @NamedQuery(name = "Curso.findByNome", query = "SELECT c FROM Curso c WHERE c.nome = :nome and c.deleted = false"),
+    @NamedQuery(name = "Curso.findByPreco", query = "SELECT c FROM Curso c WHERE c.preco = :preco and c.deleted = false")})
 public class Curso implements Serializable, Comparable<Curso> {
 
     @Serial
@@ -42,7 +42,7 @@ public class Curso implements Serializable, Comparable<Curso> {
     @Column(name = "preco_curso")
     private Double preco;
 
-    @Column(name = "eliminado")
+    @Column(name = "eliminado", nullable = false)
     private Boolean deleted;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "curso", fetch = FetchType.LAZY)

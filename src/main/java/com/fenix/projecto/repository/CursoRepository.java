@@ -7,24 +7,25 @@ import jakarta.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author Bartolomeu Hangalo
  */
 @Stateless
-public class CursoRepository implements Repository<Curso, Integer> {
+public class CursoRepository {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
 
-    @Override
     public List<Curso> findAll() {
         return em.createNamedQuery("Curso.findAll", Curso.class)
-                .getResultList();
+                .getResultStream()
+                .filter((Curso curso) -> !curso.isDeleted())
+                .collect(Collectors.toList());
     }
 
-    @Override
     public Optional<Curso> findById(Integer id) {
         return em.createNamedQuery("Curso.findByCodigo", Curso.class)
                 .setParameter("codigo", id)
@@ -32,26 +33,23 @@ public class CursoRepository implements Repository<Curso, Integer> {
                 .findFirst();
     }
 
-    @Override
     public Curso save(Curso e) {
+        e.setDeleted(false);
         em.persist(e);
         return e;
     }
 
-    @Override
     public void saveAll(Collection<Curso> e) {
         e.forEach(this::save);
     }
 
-    @Override
     public Curso update(Curso e) {
-        findById(e.getCodigo()).ifPresent((Curso curso) -> {
-            curso.setNome(e.getNome());
-            curso.setPreco(e.getPreco());
-            curso.setInscricoes(e.getInscricoes());
-            em.merge(curso);
-        });
-        return e;
+        return em.merge(e);
+    }
+
+    public void delete(Curso curso) {
+        curso.setDeleted(true);
+        update(curso);
     }
 
 }
