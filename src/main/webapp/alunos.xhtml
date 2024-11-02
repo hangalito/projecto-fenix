@@ -1,17 +1,236 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+<body>
+<ui:composition template="./template/main.xhtml">
 
-    <body>
+    <ui:define name="content">
 
-        <ui:composition template="./template/main.xhtml">
+        <h:form id="main" enctype="multipart/form-data">
+            <p:growl id="messages" showDetail="true"/>
 
-            <ui:define name="content">
-                alunos
-            </ui:define>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{studentBean.openNew}"
+                                     update=":dialogs:manage-students-content"
+                                     oncomplete="PF('manageStudentsDialog').show()"
+                                     styleClass="ui-button-success" style="margin-right: .5rem">
+                        <p:resetInput target=":dialogs:manage-students-content"/>
+                    </p:commandButton>
+                    <p:commandButton id="delete-students-button" value="#{studentBean.deleteButtonMessage}"
+                                     icon="pi pi-trash" actionListener="#{studentBean.deleteSelectedStudents}"
+                                     styleClass="ui-button-danger" disabled="#{!studentBean.hasSelectedStudents()}"
+                                     update="@this">
+                        <p:confirm header="Confirmation" message="Eliminar os cursos selecionados?"
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:toolbarGroup>
 
-        </ui:composition>
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="Recarregar" icon="pi pi-refresh" styleClass="ui-button-primary"
+                                     ajax="false" actionListener="#{studentBean.refreshPage()}" style="margin-right: .5rem"/>
+                    <p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false"
+                                     actionListener="#{studentBean.exportUnavailable}"/>
+                </p:toolbarGroup>
+            </p:toolbar>
 
-    </body>
+            <p:dataTable id="dt-students" widgetVar="dtStudents" var="student" value="#{studentBean.students}"
+                         reflow="true" styleClass="students-table" selection="#{studentBean.selectedStudents}"
+                         rowKey="#{student.codigo}" paginator="true" rows="10" selectionRowMode="add"
+                         paginatorPosition="bottom">
+                <f:facet name="header">
+                    <div class="student-table-header">
+                        <span style="font-weight: bold">ALUNOS</span>
+                        <span class="filter-container ui-input-icon-left">
+                            <i class="pi pi-search"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('dtStudents').filter()" placeholder="Pesquisar"/>
+                        </span>
+                    </div>
+                </f:facet>
+
+                <p:ajax event="rowSelect" update=":main:delete-students-button"/>
+                <p:ajax event="rowUnselect" update=":main:delete-students-button"/>
+                <p:ajax event="rowSelectCheckbox" update=":main:delete-students-button"/>
+                <p:ajax event="rowUnselectCheckbox" update=":main:delete-students-button"/>
+                <p:ajax event="toggleSelect" update=":main:delete-students-button"/>
+
+                <p:column headerText="Código" sortBy="#{student.codigo}" filterBy="#{student.codigo}"
+                          filterStyle="display: none">
+                    <h:outputText value="#{student.codigo}"/>
+                </p:column>
+                <p:column headerText="Nome" sortBy="#{student.nome}" filterBy="#{student.nome}"
+                          filterStyle="display: none">
+                    <h:outputText value="#{student.nome}"/>
+                </p:column>
+                <p:column headerText="Sobrenome" sortBy="#{student.sobrenome}" filterBy="#{student.sobrenome}"
+                          filterStyle="display: none">
+                    <h:outputText value="#{student.sobrenome}"/>
+                </p:column>
+                <p:column headerText="Data de Nascimento" sortBy="#{student.dataDeNascimento}"
+                          filterBy="#{student.dataDeNascimento}" filterStyle="display: none">
+                    <h:outputText value="#{student.dataDeNascimento}">
+                        <f:convertDateTime locale="pt_AO" type="date" pattern="dd MMM YYYY"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Escola" sortBy="#{student.escola.nome}" filterBy="#{student.escola.nome}"
+                          filterStyle="display: none">
+                    <h:outputText value="#{student.escola.nome}"/>
+                </p:column>
+                <p:column headerText="Telefone" sortBy="#{student.telefone}" filterBy="#{student.telefone}"
+                          filterStyle="display: none">
+                    <h:outputText value="#{empty student.telefone ? 'N/A' : student.telefone}"/>
+                </p:column>
+
+                <p:column exportable="false" ariaHeaderText="Actions">
+                    <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-students-content"
+                                     oncomplete="PF('manageStudentsDialog').show()" process="@this"
+                                     styleClass="edit-button rounded-button ui-button-success" style="margin: 4px">
+                        <f:setPropertyActionListener value="#{student}" target="#{studentBean.selectedStudent}"/>
+                        <p:resetInput target=":dialogs:manage-students-content"/>
+                    </p:commandButton>
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                     process="@this" oncomplete="PF('deleteStudentDialog').show()" style="margin: 4px">
+                        <f:setPropertyActionListener value="#{student}" target="#{studentBean.selectedStudent}"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+        <h:form id="dialogs">
+            <p:dialog header="Detalhes do Aluno" showEffect="fade" modal="true" widgetVar="manageStudentsDialog"
+                      responsive="true" maximizable="true" id="manage-student-dialog" height="50vh">
+                <p:outputPanel id="manage-students-content" class="ui-fluid">
+                    <p:outputPanel rendered="#{not empty studentBean.selectedStudent}">
+                        <div class="form-control">
+                            <div class="field">
+                                <p:outputLabel for="name">Nome</p:outputLabel>
+                                <p:inputText id="name" value="#{studentBean.selectedStudent.nome}" required="true"
+                                             placeholder="Nome do aluno"/>
+                                <p:message for="name"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="Nome do aluno" for="name"/>
+                                <p:outputLabel for="surname">Sobrenome</p:outputLabel>
+                                <p:inputText id="surname" value="#{studentBean.selectedStudent.sobrenome}"
+                                             required="true" placeholder="Sobrenome do aluno"/>
+                                <p:message for="surname"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="Sobrenome do aluno" for="surname"/>
+                                <p:outputLabel for="birthdate">Data de Nascimento</p:outputLabel>
+                                <p:inputText id="birthdate" value="#{studentBean.birthdate}"
+                                             placeholder="Data de nascimento"
+                                             required="true" type="date"/>
+                                <p:message for="birthdate"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="Número de telefone do aluno" for="tel"/>
+                                <p:outputLabel for="tel">Telefone</p:outputLabel>
+                                <p:inputMask id="tel" mask="+244-999-999-999"
+                                             placeholder="Número de telefone do aluno"
+                                             value="#{studentBean.selectedStudent.telefone}"/>
+                                <p:message for="tel"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="Endereço de email do aluno" for="email"/>
+                                <p:outputLabel for="email">Email</p:outputLabel>
+                                <p:inputText id="email" type="email" value="#{studentBean.selectedStudent.email}"
+                                             placeholder="Email do aluno"/>
+                                <p:message for="email"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="A escola em que o aluno estuda" for="school"/>
+                                <p:outputLabel for="school">Escola</p:outputLabel>
+                                <p:selectOneMenu value="#{studentBean.selectedStudent.escola}" id="school"
+                                                 converter="schoolConverter" title="A escola em que o aluno estuda">
+                                    <f:selectItem itemLabel="Selecione uma escola" itemValue=""/>
+                                    <f:selectItems value="#{studentBean.schools}" var="school"
+                                                   itemLabel="#{school.nome}" itemValue="#{school.nome}"/>
+                                </p:selectOneMenu>
+                                <p:message for="school"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="O endereço em que o aluno vive" for="address"/>
+                                <p:outputLabel for="address">Endereço</p:outputLabel>
+                                <p:inputText id="address" value="#{studentBean.selectedStudent.endereco}" placeholder="Endereço"/>
+                                <p:message for="address"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="O bairro em que o aluno vive" for="neighbourhood"/>
+                                <p:outputLabel for="neighbourhood">Bairro</p:outputLabel>
+                                <p:autoComplete id="neighbourhood" value="#{studentBean.selectedStudent.bairro}"
+                                                placeholder="Bairro"
+                                                completeMethod="#{studentBean.completeTextNeighbourhoods}"/>
+                                <p:message for="neighbourhood"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="O distrito em que o aluno vive" for="district"/>
+                                <p:outputLabel for="district">Distrito</p:outputLabel>
+                                <p:autoComplete id="district" value="#{studentBean.selectedStudent.distrito}"
+                                                placeholder="Distrito"
+                                                completeMethod="#{studentBean.completeTextDistricts}"
+                                                scrollHeight="250"/>
+                                <p:message for="district"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="O municipio em que o aluno vive" for="state"/>
+                                <p:outputLabel for="state">Municipio</p:outputLabel>
+                                <!--                                <p:inputText id="state" value="#{studentBean.selectedStudent.municipio}"/>-->
+                                <p:autoComplete id="state" value="#{studentBean.selectedStudent.municipio}"
+                                                placeholder="Municipio"
+                                                completeMethod="#{studentBean.completeTextStates}" scrollHeight="250"/>
+                                <p:message for="state"/>
+                            </div>
+                            <div class="field">
+                                <p:tooltip value="A provincia em que o aluno vive" for="province"/>
+                                <p:outputLabel for="province">Provincia</p:outputLabel>
+                                <p:selectOneMenu id="province" value="#{studentBean.selectedStudent.provincia}"
+                                                 converter="provinceConverter">
+                                    <f:selectItem itemLabel="Selecione uma provincia" itemValue=""/>
+                                    <f:selectItems value="#{provinciaBean.provincias}" var="prov"
+                                                   itemLabel="#{prov.nome}" itemValue="#{prov.nome}"/>
+                                </p:selectOneMenu>
+                                <p:message for="province"/>
+                            </div>
+                        </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+
+
+                <f:facet name="footer">
+                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{studentBean.saveStudent}"
+                                     update="manage-students-content" process="manage-students-content @this"/>
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageStudentsDialog').hide()"
+                                     class="ui-button-secondary" type="button"/>
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="deleteStudentDialog" showEffect="fade" width="300"
+                             message="Eliminar o aluno selecionado?" header="Confirmar" severity="warn">
+                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{studentBean.deleteStudent}"
+                                 process="@this" update=":main:delete-students-button"
+                                 oncomplete="PF('deleteStudentDialog').hide()"/>
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteStudentDialog').hide()"/>
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                 icon="pi pi-times"/>
+            </p:confirmDialog>
+
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+
+</body>
 </html>

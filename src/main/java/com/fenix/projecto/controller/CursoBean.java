@@ -26,9 +26,6 @@ public class CursoBean implements Serializable {
     private Curso selectedCourse;
     private List<Curso> selectedCourses;
 
-    public CursoBean() {
-    }
-
     @PostConstruct
     public void init() {
         courses = repo.findAll();

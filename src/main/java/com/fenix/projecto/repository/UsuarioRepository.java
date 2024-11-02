@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Stateless

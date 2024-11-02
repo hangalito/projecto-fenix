@@ -1,0 +1,10 @@
+.form-control {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, max-content);
+    gap: 8px;
+}
+
+.manage-students-dialog {
+    max-height: 45vh;
+}

@@ -4,30 +4,30 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
- *
  * @author Bartolomeu Hangalo
  */
 @Entity
 @Table(name = "aluno")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Aluno.findAll", query = "SELECT a FROM Aluno a where a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByCodigo", query = "SELECT a FROM Aluno a WHERE a.codigo = :codigo and a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByNome", query = "SELECT a FROM Aluno a WHERE a.nome = :nome"),
-    @NamedQuery(name = "Aluno.findBySobrenome", query = "SELECT a FROM Aluno a WHERE a.sobrenome = :sobrenome and a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByDataNasc", query = "SELECT a FROM Aluno a WHERE a.dataDeNascimento = :dataDeNascimento and  a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByTelefone", query = "SELECT a FROM Aluno a WHERE a.telefone = :telefone and a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByEmail", query = "SELECT a FROM Aluno a WHERE a.email = :email and a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByEndereco", query = "SELECT a FROM Aluno a WHERE a.endereco = :endereco and a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByBairro", query = "SELECT a FROM Aluno a WHERE a.bairro = :bairro and a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByDistrito", query = "SELECT a FROM Aluno a WHERE a.distrito = :distrito and a.deleted = false"),
-    @NamedQuery(name = "Aluno.findByMunicipio", query = "SELECT a FROM Aluno a WHERE a.municipio = :municipio and a.deleted = false")})
+        @NamedQuery(name = "Aluno.findAll", query = "SELECT a FROM Aluno a where a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByCodigo", query = "SELECT a FROM Aluno a WHERE a.codigo = :codigo and a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByNome", query = "SELECT a FROM Aluno a WHERE a.nome = :nome"),
+        @NamedQuery(name = "Aluno.findBySobrenome", query = "SELECT a FROM Aluno a WHERE a.sobrenome = :sobrenome and a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByDataNasc", query = "SELECT a FROM Aluno a WHERE a.dataDeNascimento = :dataDeNascimento and  a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByTelefone", query = "SELECT a FROM Aluno a WHERE a.telefone = :telefone and a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByEmail", query = "SELECT a FROM Aluno a WHERE a.email = :email and a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByEndereco", query = "SELECT a FROM Aluno a WHERE a.endereco = :endereco and a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByBairro", query = "SELECT a FROM Aluno a WHERE a.bairro = :bairro and a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByDistrito", query = "SELECT a FROM Aluno a WHERE a.distrito = :distrito and a.deleted = false"),
+        @NamedQuery(name = "Aluno.findByMunicipio", query = "SELECT a FROM Aluno a WHERE a.municipio = :municipio and a.deleted = false")})
 public class Aluno implements Serializable, Comparable<Aluno> {
 
     @Serial
@@ -82,10 +82,6 @@ public class Aluno implements Serializable, Comparable<Aluno> {
     @JoinColumn(name = "codigo_escola", referencedColumnName = "codigo_escola")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Escola escola;
-
-    @JoinColumn(name = "codigo_formacao", referencedColumnName = "codigo_formacao")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private FormacaoAluno formacao;
 
     @JoinColumn(name = "codigo_provincia", referencedColumnName = "codigo_provincia")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -198,14 +194,6 @@ public class Aluno implements Serializable, Comparable<Aluno> {
         this.escola = escola;
     }
 
-    public FormacaoAluno getFormacao() {
-        return formacao;
-    }
-
-    public void setFormacao(FormacaoAluno formacao) {
-        this.formacao = formacao;
-    }
-
     public Provincia getProvincia() {
         return provincia;
     }
@@ -248,7 +236,7 @@ public class Aluno implements Serializable, Comparable<Aluno> {
 
     @Override
     public String toString() {
-        return "Aluno{" + "codigo=" + codigo + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dataDeNascimento=" + dataDeNascimento + ", telefone=" + telefone + ", email=" + email + ", endereco=" + endereco + ", bairro=" + bairro + ", distrito=" + distrito + ", municipio=" + municipio + ", escola=" + escola + ", formacao=" + formacao + ", provincia=" + provincia + ", inscricoes=" + inscricoes + '}';
+        return "Aluno{" + "codigo=" + codigo + ", nome=" + nome + ", sobrenome=" + sobrenome + ", dataDeNascimento=" + dataDeNascimento + ", telefone=" + telefone + ", email=" + email + ", endereco=" + endereco + ", bairro=" + bairro + ", distrito=" + distrito + ", municipio=" + municipio + ", escola=" + escola + ", provincia=" + provincia + ", inscricoes=" + inscricoes + '}';
     }
 
     @Override
