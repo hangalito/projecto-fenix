@@ -34,7 +34,7 @@ public class Professor implements Serializable, Comparable<Professor> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "codgo_professor")
+    @Column(name = "codigo_professor")
     private Integer codigo;
 
     @Basic(optional = false)

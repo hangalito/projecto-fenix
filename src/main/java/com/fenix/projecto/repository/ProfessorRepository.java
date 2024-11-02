@@ -10,22 +10,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Bartolomeu Hangalo
- */
 @Stateless
-public class ProfessorRepository implements Repository<Professor, Integer> {
+public class ProfessorRepository {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
 
-    @Override
     public List<Professor> findAll() {
         return em.createNamedQuery("Professor.findAll", Professor.class)
                 .getResultList();
     }
 
-    @Override
     public Optional<Professor> findById(Integer id) {
         return em.createNamedQuery("Professor.findByCodgo", Professor.class)
                 .setParameter("codigo", id)
@@ -33,24 +28,20 @@ public class ProfessorRepository implements Repository<Professor, Integer> {
                 .findFirst();
     }
 
-    @Override
     public Professor save(Professor e) {
         em.persist(e);
         return e;
     }
 
-    @Override
     public void saveAll(Collection<Professor> e) {
         e.forEach(this::save);
     }
 
     @Transactional
-    @Override
     public Professor update(Professor e) {
         return em.merge(e);
     }
 
-    @Override
     public void delete(Professor e) {
         e.setDeleted(true);
         update(e);
