@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="pt-AO" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="jakarta.faces.html"
@@ -42,7 +42,7 @@
 
             <p:dataTable id="dt-students" widgetVar="dtStudents" var="student" value="#{studentBean.students}"
                          reflow="true" styleClass="students-table" selection="#{studentBean.selectedStudents}"
-                         rowKey="#{student.codigo}" paginator="true" rows="10" selectionRowMode="add"
+                         rowKey="#{student.code}" paginator="true" rows="10" selectionRowMode="add"
                          paginatorPosition="bottom">
                 <f:facet name="header">
                     <div class="student-table-header">
@@ -60,31 +60,31 @@
                 <p:ajax event="rowUnselectCheckbox" update=":main:delete-students-button"/>
                 <p:ajax event="toggleSelect" update=":main:delete-students-button"/>
 
-                <p:column headerText="Código" sortBy="#{student.codigo}" filterBy="#{student.codigo}"
+                <p:column headerText="Código" sortBy="#{student.code}" filterBy="#{student.code}"
                           filterStyle="display: none">
-                    <h:outputText value="#{student.codigo}"/>
+                    <h:outputText value="#{student.code}"/>
                 </p:column>
-                <p:column headerText="Nome" sortBy="#{student.nome}" filterBy="#{student.nome}"
+                <p:column headerText="Nome" sortBy="#{student.name}" filterBy="#{student.name}"
                           filterStyle="display: none">
-                    <h:outputText value="#{student.nome}"/>
+                    <h:outputText value="#{student.name}"/>
                 </p:column>
-                <p:column headerText="Sobrenome" sortBy="#{student.sobrenome}" filterBy="#{student.sobrenome}"
+                <p:column headerText="Sobrenome" sortBy="#{student.surname}" filterBy="#{student.surname}"
                           filterStyle="display: none">
-                    <h:outputText value="#{student.sobrenome}"/>
+                    <h:outputText value="#{student.surname}"/>
                 </p:column>
-                <p:column headerText="Data de Nascimento" sortBy="#{student.dataDeNascimento}"
-                          filterBy="#{student.dataDeNascimento}" filterStyle="display: none">
-                    <h:outputText value="#{student.dataDeNascimento}">
+                <p:column headerText="Data de Nascimento" sortBy="#{student.birthdate}"
+                          filterBy="#{student.birthdate}" filterStyle="display: none">
+                    <h:outputText value="#{student.birthdate}">
                         <f:convertDateTime locale="pt_AO" type="date" pattern="dd MMM YYYY"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Escola" sortBy="#{student.escola.nome}" filterBy="#{student.escola.nome}"
+                <p:column headerText="Escola" sortBy="#{student.school.name}" filterBy="#{student.school.name}"
                           filterStyle="display: none">
-                    <h:outputText value="#{student.escola.nome}"/>
+                    <h:outputText value="#{student.school.name}"/>
                 </p:column>
-                <p:column headerText="Telefone" sortBy="#{student.telefone}" filterBy="#{student.telefone}"
+                <p:column headerText="Telefone" sortBy="#{student.telephone}" filterBy="#{student.telephone}"
                           filterStyle="display: none">
-                    <h:outputText value="#{empty student.telefone ? 'N/A' : student.telefone}"/>
+                    <h:outputText value="#{empty student.telephone ? 'N/A' : student.telephone}"/>
                 </p:column>
 
                 <p:column exportable="false" ariaHeaderText="Actions">
@@ -116,14 +116,14 @@
                         <div class="form-control">
                             <div class="field">
                                 <p:outputLabel for="name">Nome</p:outputLabel>
-                                <p:inputText id="name" value="#{studentBean.selectedStudent.nome}" required="true"
+                                <p:inputText id="name" value="#{studentBean.selectedStudent.name}" required="true"
                                              placeholder="Nome do aluno"/>
                                 <p:message for="name"/>
                             </div>
                             <div class="field">
                                 <p:tooltip value="Nome do aluno" for="name"/>
                                 <p:outputLabel for="surname">Sobrenome</p:outputLabel>
-                                <p:inputText id="surname" value="#{studentBean.selectedStudent.sobrenome}"
+                                <p:inputText id="surname" value="#{studentBean.selectedStudent.surname}"
                                              required="true" placeholder="Sobrenome do aluno"/>
                                 <p:message for="surname"/>
                             </div>
@@ -140,7 +140,7 @@
                                 <p:outputLabel for="tel">Telefone</p:outputLabel>
                                 <p:inputMask id="tel" mask="+244-999-999-999"
                                              placeholder="Número de telefone do aluno"
-                                             value="#{studentBean.selectedStudent.telefone}"/>
+                                             value="#{studentBean.selectedStudent.telephone}"/>
                                 <p:message for="tel"/>
                             </div>
                             <div class="field">
@@ -153,25 +153,25 @@
                             <div class="field">
                                 <p:tooltip value="A escola em que o aluno estuda" for="school"/>
                                 <p:outputLabel for="school">Escola</p:outputLabel>
-                                <p:selectOneMenu value="#{studentBean.selectedStudent.escola}" id="school"
+                                <p:selectOneMenu value="#{studentBean.selectedStudent.school}" id="school"
                                                  converter="schoolConverter" title="A escola em que o aluno estuda">
                                     <f:selectItem itemLabel="Selecione uma escola" itemValue=""/>
                                     <f:selectItems value="#{studentBean.schools}" var="school"
-                                                   itemLabel="#{school.nome}" itemValue="#{school.nome}"/>
+                                                   itemLabel="#{school.name}" itemValue="#{school.name}"/>
                                 </p:selectOneMenu>
                                 <p:message for="school"/>
                             </div>
                             <div class="field">
                                 <p:tooltip value="O endereço em que o aluno vive" for="address"/>
                                 <p:outputLabel for="address">Endereço</p:outputLabel>
-                                <p:inputText id="address" value="#{studentBean.selectedStudent.endereco}"
+                                <p:inputText id="address" value="#{studentBean.selectedStudent.address}"
                                              placeholder="Endereço"/>
                                 <p:message for="address"/>
                             </div>
                             <div class="field">
                                 <p:tooltip value="O bairro em que o aluno vive" for="neighbourhood"/>
                                 <p:outputLabel for="neighbourhood">Bairro</p:outputLabel>
-                                <p:autoComplete id="neighbourhood" value="#{studentBean.selectedStudent.bairro}"
+                                <p:autoComplete id="neighbourhood" value="#{studentBean.selectedStudent.neighbourhood}"
                                                 placeholder="Bairro"
                                                 completeMethod="#{studentBean.completeTextNeighbourhoods}"/>
                                 <p:message for="neighbourhood"/>
@@ -179,7 +179,7 @@
                             <div class="field">
                                 <p:tooltip value="O distrito em que o aluno vive" for="district"/>
                                 <p:outputLabel for="district">Distrito</p:outputLabel>
-                                <p:autoComplete id="district" value="#{studentBean.selectedStudent.distrito}"
+                                <p:autoComplete id="district" value="#{studentBean.selectedStudent.district}"
                                                 placeholder="Distrito"
                                                 completeMethod="#{studentBean.completeTextDistricts}"
                                                 scrollHeight="250"/>
@@ -188,8 +188,8 @@
                             <div class="field">
                                 <p:tooltip value="O municipio em que o aluno vive" for="state"/>
                                 <p:outputLabel for="state">Municipio</p:outputLabel>
-                                <!--                                <p:inputText id="state" value="#{studentBean.selectedStudent.municipio}"/>-->
-                                <p:autoComplete id="state" value="#{studentBean.selectedStudent.municipio}"
+                                <!--                                <p:inputText id="state" value="#{studentBean.selectedStudent.state}"/>-->
+                                <p:autoComplete id="state" value="#{studentBean.selectedStudent.state}"
                                                 placeholder="Municipio"
                                                 completeMethod="#{studentBean.completeTextStates}" scrollHeight="250"/>
                                 <p:message for="state"/>
@@ -197,11 +197,11 @@
                             <div class="field">
                                 <p:tooltip value="A provincia em que o aluno vive" for="province"/>
                                 <p:outputLabel for="province">Provincia</p:outputLabel>
-                                <p:selectOneMenu id="province" value="#{studentBean.selectedStudent.provincia}"
+                                <p:selectOneMenu id="province" value="#{studentBean.selectedStudent.province}"
                                                  converter="provinceConverter">
                                     <f:selectItem itemLabel="Selecione uma provincia" itemValue=""/>
-                                    <f:selectItems value="#{provinciaBean.provincias}" var="prov"
-                                                   itemLabel="#{prov.nome}" itemValue="#{prov.nome}"/>
+                                    <f:selectItems value="#{provinceBean.provincias}" var="prov"
+                                                   itemLabel="#{prov.name}" itemValue="#{prov.name}"/>
                                 </p:selectOneMenu>
                                 <p:message for="province"/>
                             </div>

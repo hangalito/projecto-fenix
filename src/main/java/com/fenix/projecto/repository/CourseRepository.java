@@ -1,6 +1,6 @@
 package com.fenix.projecto.repository;
 
-import com.fenix.projecto.model.Curso;
+import com.fenix.projecto.model.Course;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -9,45 +9,41 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Bartolomeu Hangalo
- */
 @Stateless
-public class CursoRepository {
+public class CourseRepository {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
 
-    public List<Curso> findAll() {
-        return em.createNamedQuery("Curso.findAll", Curso.class)
+    public List<Course> findAll() {
+        return em.createNamedQuery("Course.findAll", Course.class)
                 .getResultStream()
-                .filter((Curso curso) -> !curso.isDeleted())
+                .filter((Course curso) -> !curso.isDeleted())
                 .collect(Collectors.toList());
     }
 
-    public Optional<Curso> findById(Integer id) {
-        return em.createNamedQuery("Curso.findByCodigo", Curso.class)
-                .setParameter("codigo", id)
+    public Optional<Course> findById(Integer id) {
+        return em.createNamedQuery("Course.findByCode", Course.class)
+                .setParameter("code", id)
                 .getResultStream()
                 .findFirst();
     }
 
-    public Curso save(Curso e) {
+    public Course save(Course e) {
         e.setDeleted(false);
         em.persist(e);
         return e;
     }
 
-    public void saveAll(Collection<Curso> e) {
+    public void saveAll(Collection<Course> e) {
         e.forEach(this::save);
     }
 
-    public Curso update(Curso e) {
+    public Course update(Course e) {
         return em.merge(e);
     }
 
-    public void delete(Curso curso) {
+    public void delete(Course curso) {
         curso.setDeleted(true);
         update(curso);
     }

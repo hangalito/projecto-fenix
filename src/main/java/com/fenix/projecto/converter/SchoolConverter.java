@@ -1,6 +1,6 @@
 package com.fenix.projecto.converter;
 
-import com.fenix.projecto.repository.EscolaRepository;
+import com.fenix.projecto.repository.SchoolRepository;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -11,7 +11,7 @@ import jakarta.inject.Inject;
 public class SchoolConverter implements Converter<Object> {
 
     @Inject
-    EscolaRepository repo;
+    SchoolRepository repo;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {

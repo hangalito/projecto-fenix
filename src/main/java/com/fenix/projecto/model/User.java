@@ -10,23 +10,17 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author Bartolomeu Hangalo
- */
 @Entity
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u WHERE u.deleted = false"),
-    @NamedQuery(name = "Usuario.findByCodigo", query = "SELECT u FROM Usuario u WHERE u.codigo = :codigo AND u.deleted = false"),
-    @NamedQuery(name = "Usuario.findByNome", query = "SELECT u FROM Usuario u WHERE u.nome = :nome AND u.deleted = false"),
-    @NamedQuery(name = "Usuario.findBySobrenome", query = "SELECT u FROM Usuario u WHERE u.sobrenome = :sobrenome AND u.deleted = false"),
-    @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username AND u.deleted = false"),
-    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email AND u.deleted = false"),
-    @NamedQuery(name = "Usuario.findByCreateTime", query = "SELECT u FROM Usuario u WHERE u.createTime = :createTime AND u.deleted = false"),
-    @NamedQuery(name = "Usuario.findAdmins", query = "SELECT u FROM Usuario u WHERE u.admin = true AND u.deleted = false"),
-    @NamedQuery(name = "Usuario.findViewers", query = "SELECT u FROM Usuario u  WHERE u.viewer = true AND u.deleted = false")})
-public class Usuario implements Serializable, Comparable<Usuario> {
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u WHERE u.deleted = false"),
+    @NamedQuery(name = "User.findByCode", query = "SELECT u FROM User u WHERE u.code = :code AND u.deleted = false"),
+    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username AND u.deleted = false"),
+    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email AND u.deleted = false"),
+    @NamedQuery(name = "User.findAdmins", query = "SELECT u FROM User u WHERE u.admin = true AND u.deleted = false"),
+    @NamedQuery(name = "User.findViewers", query = "SELECT u FROM User u  WHERE u.viewer = true AND u.deleted = false")})
+public class User implements Serializable, Comparable<User> {
 
     @Serial
     private static final long serialVersionUID = 2L;
@@ -35,19 +29,19 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "codigo_usuario")
-    private Integer codigo;
+    private Integer code;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 21)
     @Column(name = "nome_usuario")
-    private String nome;
+    private String name;
 
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 21)
     @Column(name = "sobrenome_usuario")
-    private String sobrenome;
+    private String surname;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 16)
@@ -75,43 +69,43 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     @Column(name = "eliminado")
     private Boolean deleted;
 
-    public Usuario() {
+    public User() {
     }
 
-    public Usuario(Integer codigoUsuario) {
-        this.codigo = codigoUsuario;
+    public User(Integer codigoUser) {
+        this.code = codigoUser;
     }
 
-    public Usuario(Integer codigoUsuario, String nomeUsuario, String sobrenomeUsuario, String username, String password) {
-        this.codigo = codigoUsuario;
-        this.nome = nomeUsuario;
-        this.sobrenome = sobrenomeUsuario;
+    public User(Integer codigoUser, String nomeUser, String sobrenomeUser, String username, String password) {
+        this.code = codigoUser;
+        this.name = nomeUser;
+        this.surname = sobrenomeUser;
         this.username = username;
         this.password = password;
     }
 
-    public Integer getCodigo() {
-        return codigo;
+    public Integer getCode() {
+        return code;
     }
 
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSobrenome() {
-        return sobrenome;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getUsername() {
@@ -173,28 +167,27 @@ public class Usuario implements Serializable, Comparable<Usuario> {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codigo != null ? codigo.hashCode() : 0);
+        hash += (code != null ? code.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuario)) {
+        if (!(object instanceof User)) {
             return false;
         }
-        Usuario other = (Usuario) object;
-        return !((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo)));
+        User other = (User) object;
+        return !((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code)));
     }
 
     @Override
     public String toString() {
-        return "Usuario{" + "codigo=" + codigo + ", nome=" + nome + ", sobrenome=" + sobrenome + ", username=" + username + ", email=" + email + ", password=" + password + ", createTime=" + createTime + ", admin=" + admin + ", viewer=" + viewer + '}';
+        return "User{" + "code=" + code + ", name=" + name + ", surname=" + surname + ", username=" + username + ", email=" + email + ", password=" + password + ", createTime=" + createTime + ", admin=" + admin + ", viewer=" + viewer + ", deleted=" + deleted + '}';
     }
 
     @Override
-    public int compareTo(Usuario o) {
-        return nome.compareTo(o.nome);
+    public int compareTo(User o) {
+        return name.compareTo(o.name);
     }
 
 }

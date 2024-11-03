@@ -1,6 +1,6 @@
 package com.fenix.projecto.repository;
 
-import com.fenix.projecto.model.Escola;
+import com.fenix.projecto.model.School;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,50 +10,47 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Bartolomeu Hangalo
- */
 @Stateless
-public class EscolaRepository {
+public class SchoolRepository {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
 
 
-    public List<Escola> findAll() {
-        return em.createNamedQuery("Escola.findAll", Escola.class)
+    public List<School> findAll() {
+        return em.createNamedQuery("School.findAll", School.class)
                 .getResultList();
     }
 
-    public Optional<Escola> findById(Integer id) {
-        return em.createNamedQuery("Escola.findByCodigo", Escola.class)
-                .setParameter("codigo", id)
+    public Optional<School> findById(Integer id) {
+        return em.createNamedQuery("School.findByCode", School.class)
+                .setParameter("code", id)
                 .getResultStream()
                 .findFirst();
     }
 
-    public Optional<Escola> findByName(String name) {
-        return em.createNamedQuery("Escola.findByNome", Escola.class)
-                .setParameter("nome",name)
+    public Optional<School> findByName(String name) {
+        return em.createNamedQuery("School.findByName", School.class)
+                .setParameter("name",name)
                 .getResultStream()
                 .findFirst();
     }
 
-    public Escola save(Escola e) {
+    public School save(School e) {
         em.persist(e);
         return e;
     }
 
-    public void saveAll(Collection<Escola> e) {
+    public void saveAll(Collection<School> e) {
         e.forEach(this::save);
     }
 
     @Transactional
-    public Escola update(Escola e) {
+    public School update(School e) {
         return em.merge(e);
     }
 
-    public void delete(Escola e) {
+    public void delete(School e) {
         e.setDeleted(true);
         update(e);
     }

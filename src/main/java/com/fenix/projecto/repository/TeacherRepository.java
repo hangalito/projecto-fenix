@@ -1,6 +1,6 @@
 package com.fenix.projecto.repository;
 
-import com.fenix.projecto.model.Professor;
+import com.fenix.projecto.model.Teacher;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -11,38 +11,38 @@ import java.util.List;
 import java.util.Optional;
 
 @Stateless
-public class ProfessorRepository {
+public class TeacherRepository {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
 
-    public List<Professor> findAll() {
-        return em.createNamedQuery("Professor.findAll", Professor.class)
+    public List<Teacher> findAll() {
+        return em.createNamedQuery("Teacher.findAll", Teacher.class)
                 .getResultList();
     }
 
-    public Optional<Professor> findById(Integer id) {
-        return em.createNamedQuery("Professor.findByCodgo", Professor.class)
-                .setParameter("codigo", id)
+    public Optional<Teacher> findById(Integer id) {
+        return em.createNamedQuery("Teacher.findByCode", Teacher.class)
+                .setParameter("code", id)
                 .getResultStream()
                 .findFirst();
     }
 
-    public Professor save(Professor e) {
+    public Teacher save(Teacher e) {
         em.persist(e);
         return e;
     }
 
-    public void saveAll(Collection<Professor> e) {
+    public void saveAll(Collection<Teacher> e) {
         e.forEach(this::save);
     }
 
     @Transactional
-    public Professor update(Professor e) {
+    public Teacher update(Teacher e) {
         return em.merge(e);
     }
 
-    public void delete(Professor e) {
+    public void delete(Teacher e) {
         e.setDeleted(true);
         update(e);
     }

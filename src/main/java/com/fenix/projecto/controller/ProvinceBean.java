@@ -1,7 +1,7 @@
 package com.fenix.projecto.controller;
 
-import com.fenix.projecto.model.Provincia;
-import com.fenix.projecto.repository.ProvinciaRepsoitory;
+import com.fenix.projecto.model.Province;
+import com.fenix.projecto.repository.ProvinceRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
@@ -9,22 +9,18 @@ import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- *
- * @author hangalo
- */
-@Named(value = "provinciaBean")
+@Named(value = "provinceBean")
 @SessionScoped
-public class ProvinciaBean implements Serializable {
+public class ProvinceBean implements Serializable {
 
     @Inject
-    private ProvinciaRepsoitory repo;
-    private List<Provincia> provincias;
+    private ProvinceRepository repo;
+    private List<Province> provincias;
 
     /**
      * Creates a new instance of ProvinciaBean
      */
-    public ProvinciaBean() {
+    public ProvinceBean() {
     }
 
     @PostConstruct
@@ -32,19 +28,19 @@ public class ProvinciaBean implements Serializable {
         provincias = repo.findAll();
     }
 
-    public ProvinciaRepsoitory getRepo() {
+    public ProvinceRepository getRepo() {
         return repo;
     }
 
-    public void setRepo(ProvinciaRepsoitory repo) {
+    public void setRepo(ProvinceRepository repo) {
         this.repo = repo;
     }
 
-    public List<Provincia> getProvincias() {
+    public List<Province> getProvincias() {
         return provincias;
     }
 
-    public void setProvincias(List<Provincia> provincias) {
+    public void setProvincias(List<Province> provincias) {
         this.provincias = provincias;
     }
 

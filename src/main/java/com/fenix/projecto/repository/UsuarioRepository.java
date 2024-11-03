@@ -1,6 +1,6 @@
 package com.fenix.projecto.repository;
 
-import com.fenix.projecto.model.Usuario;
+import com.fenix.projecto.model.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,67 +10,58 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Bartolomeu Hangalo
- */
 @Stateless
-public class UsuarioRepository implements Repository<Usuario, Integer> {
+public class UsuarioRepository{
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
-
-    @Override
-    public List<Usuario> findAll() {
-        return em.createNamedQuery("Usuario.findAll", Usuario.class)
+    
+    public List<User> findAll() {
+        return em.createNamedQuery("User.findAll", User.class)
                 .getResultList();
     }
-
-    @Override
-    public Optional<Usuario> findById(Integer id) {
-        return em.createNamedQuery("Usuario.findByCodigo", Usuario.class)
-                .setParameter("codigo", id)
+    
+    public Optional<User> findById(Integer id) {
+        return em.createNamedQuery("User.findByCode", User.class)
+                .setParameter("code", id)
                 .getResultStream()
                 .findFirst();
     }
-
-    @Override
-    public Usuario save(Usuario e) {
+    
+    public User save(User e) {
         em.persist(e);
         return e;
     }
-
-    @Override
-    public void saveAll(Collection<Usuario> e) {
+    
+    public void saveAll(Collection<User> e) {
         e.forEach(this::save);
     }
 
     @Transactional
-    @Override
-    public Usuario update(Usuario e) {
+    public User update(User e) {
         return em.merge(e);
     }
 
-    public Optional<Usuario> findByUsername(String username) {
-        return em.createNamedQuery("Usuario.findByUsername", Usuario.class)
+    public Optional<User> findByUsername(String username) {
+        return em.createNamedQuery("User.findByUsername", User.class)
                 .setParameter("username", username)
                 .getResultStream()
                 .findFirst();
     }
 
-    public Optional<Usuario> findByEmail(String email) {
-        return em.createNamedQuery("Usuario.findByEmail", Usuario.class)
+    public Optional<User> findByEmail(String email) {
+        return em.createNamedQuery("User.findByEmail", User.class)
                 .setParameter("email", email)
                 .getResultStream()
                 .findFirst();
     }
 
-    public List<Usuario> findViewersOnly() {
-        return em.createNamedQuery("Usuario.findViewers", Usuario.class)
+    public List<User> findViewersOnly() {
+        return em.createNamedQuery("User.findViewers", User.class)
                 .getResultList();
     }
-
-    @Override
-    public void delete(Usuario e) {
+    
+    public void delete(User e) {
         e.setDeleted(true);
         update(e);
     }

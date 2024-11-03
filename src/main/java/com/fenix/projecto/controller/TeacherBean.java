@@ -1,7 +1,7 @@
 package com.fenix.projecto.controller;
 
-import com.fenix.projecto.model.Professor;
-import com.fenix.projecto.repository.ProfessorRepository;
+import com.fenix.projecto.model.Teacher;
+import com.fenix.projecto.repository.TeacherRepository;
 import com.fenix.projecto.util.DateTimeConverter;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 @SessionScoped
 public class TeacherBean implements Serializable {
     @Inject
-    private ProfessorRepository repository;
-    private List<Professor> teachers;
-    private List<Professor> selectedTeachers;
-    private Professor selectedTeacher;
+    private TeacherRepository repository;
+    private List<Teacher> teachers;
+    private List<Teacher> selectedTeachers;
+    private Teacher selectedTeacher;
 
     private String birthdate;
 
@@ -31,27 +31,27 @@ public class TeacherBean implements Serializable {
         teachers = repository.findAll();
     }
 
-    public List<Professor> getTeachers() {
+    public List<Teacher> getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(List<Professor> teachers) {
+    public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }
 
-    public List<Professor> getSelectedTeachers() {
+    public List<Teacher> getSelectedTeachers() {
         return selectedTeachers;
     }
 
-    public void setSelectedTeachers(List<Professor> selectedTeachers) {
+    public void setSelectedTeachers(List<Teacher> selectedTeachers) {
         this.selectedTeachers = selectedTeachers;
     }
 
-    public Professor getSelectedTeacher() {
+    public Teacher getSelectedTeacher() {
         return selectedTeacher;
     }
 
-    public void setSelectedTeacher(Professor selectedTeacher) {
+    public void setSelectedTeacher(Teacher selectedTeacher) {
         this.selectedTeacher = selectedTeacher;
     }
 
@@ -68,7 +68,7 @@ public class TeacherBean implements Serializable {
     }
 
     public void openNew() {
-        selectedTeacher = new Professor();
+        selectedTeacher = new Teacher();
     }
 
     public void refreshPage() {
@@ -77,9 +77,9 @@ public class TeacherBean implements Serializable {
     }
 
     public void saveTeacher() {
-        selectedTeacher.setDataDeNascimento(DateTimeConverter.convertToDate(birthdate));
+        selectedTeacher.setBirthdate(DateTimeConverter.convertToDate(birthdate));
         String msg;
-        if (selectedTeacher.getCodigo() == null) {
+        if (selectedTeacher.getCode() == null) {
             repository.save(selectedTeacher);
             msg = "Novo professor cadastrado";
         } else {
@@ -123,19 +123,19 @@ public class TeacherBean implements Serializable {
 
     //<editor-fold des="Auto-Complete Methods">
     public List<String> completeTextNeighbourhood(String query) {
-        return teachers.stream().map(Professor::getBairro)
+        return teachers.stream().map(Teacher::getNeighbourhood)
                 .filter((String n) -> n.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<String> completeTextDistrict(String query) {
-        return teachers.stream().map(Professor::getDistrito)
+        return teachers.stream().map(Teacher::getDistrict)
                 .filter((String d) -> d.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<String> completeTextState(String query) {
-        return teachers.stream().map(Professor::getMunicipio)
+        return teachers.stream().map(Teacher::getState)
                 .filter((String s) -> s.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }

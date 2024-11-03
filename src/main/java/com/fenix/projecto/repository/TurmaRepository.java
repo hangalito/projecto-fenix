@@ -1,6 +1,6 @@
 package com.fenix.projecto.repository;
 
-import com.fenix.projecto.model.Turma;
+import com.fenix.projecto.model.Class;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,51 +10,36 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-/**
- *
- * @author Bartolomeu Hangalo
- */
 @Stateless
-public class TurmaRepository implements Repository<Turma, Integer> {
+public class TurmaRepository {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
 
-    @Override
-    public List<Turma> findAll() {
-        return em.createNamedQuery("Turma.findAll", Turma.class)
+    public List<Class> findAll() {
+        return em.createNamedQuery("Class.findAll", Class.class)
                 .getResultList();
     }
 
-    @Override
-    public Optional<Turma> findById(Integer id) {
-        return em.createNamedQuery("Turma.findByCodigo", Turma.class)
-                .setParameter("codigo", id)
+    public Optional<Class> findById(Integer id) {
+        return em.createNamedQuery("Class.findByCodige", Class.class)
+                .setParameter("code", id)
                 .getResultStream()
                 .findFirst();
     }
-
-    @Override
-    public Turma save(Turma e) {
+    
+    public Class save(Class e) {
         em.persist(e);
         return e;
     }
 
-    @Override
-    public void saveAll(Collection<Turma> e) {
+    public void saveAll(Collection<Class> e) {
         e.forEach(this::save);
     }
 
     @Transactional
-    @Override
-    public Turma update(Turma e) {
+    public Class update(Class e) {
         return em.merge(e);
-    }
-
-    @Override
-    public void delete(Turma e) {
-        e.setDeleted(true);
-        update(e);
     }
 
 }

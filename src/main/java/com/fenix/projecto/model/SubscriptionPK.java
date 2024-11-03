@@ -7,11 +7,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
-/**
- * @author Bartolomeu Hangalo
- */
 @Embeddable
-public class InscricaoPK implements Serializable {
+public class SubscriptionPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
@@ -22,10 +19,10 @@ public class InscricaoPK implements Serializable {
     @Column(name = "codigo_curso")
     private int codigoCurso;
 
-    public InscricaoPK() {
+    public SubscriptionPK() {
     }
 
-    public InscricaoPK(int codigoAluno, int codigoCurso) {
+    public SubscriptionPK(int codigoAluno, int codigoCurso) {
         this.codigoAluno = codigoAluno;
         this.codigoCurso = codigoCurso;
     }
@@ -56,10 +53,10 @@ public class InscricaoPK implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof InscricaoPK)) {
+        if (!(object instanceof SubscriptionPK)) {
             return false;
         }
-        InscricaoPK other = (InscricaoPK) object;
+        SubscriptionPK other = (SubscriptionPK) object;
         if (this.codigoAluno != other.codigoAluno) {
             return false;
         }

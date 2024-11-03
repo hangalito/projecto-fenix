@@ -1,6 +1,6 @@
 package com.fenix.projecto.converter;
 
-import com.fenix.projecto.repository.ProvinciaRepsoitory;
+import com.fenix.projecto.repository.ProvinceRepository;
 import com.fenix.projecto.util.Logger;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
@@ -12,7 +12,7 @@ import jakarta.inject.Inject;
 public class ProvinceConverter implements Converter<Object> {
 
     @Inject
-    private ProvinciaRepsoitory repo;
+    private ProvinceRepository repo;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {

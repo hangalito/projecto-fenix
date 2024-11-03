@@ -1,7 +1,7 @@
 package com.fenix.projecto.controller;
 
-import com.fenix.projecto.model.Curso;
-import com.fenix.projecto.repository.CursoRepository;
+import com.fenix.projecto.model.Course;
+import com.fenix.projecto.repository.CourseRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
@@ -12,59 +12,55 @@ import java.io.Serializable;
 import java.util.List;
 import org.primefaces.PrimeFaces;
 
-/**
- *
- * @author Bartolomeu Hangalo
- */
-@Named(value = "cursoBean")
+@Named(value = "courseBean")
 @SessionScoped
-public class CursoBean implements Serializable {
+public class CourseBean implements Serializable {
 
     @Inject
-    private CursoRepository repo;
-    private List<Curso> courses;
-    private Curso selectedCourse;
-    private List<Curso> selectedCourses;
+    private CourseRepository repo;
+    private List<Course> courses;
+    private Course selectedCourse;
+    private List<Course> selectedCourses;
 
     @PostConstruct
     public void init() {
         courses = repo.findAll();
     }
 
-    public CursoRepository getRepo() {
+    public CourseRepository getRepo() {
         return repo;
     }
 
-    public void setRepo(CursoRepository repo) {
+    public void setRepo(CourseRepository repo) {
         this.repo = repo;
     }
 
-    public List<Curso> getCourses() {
+    public List<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(List<Curso> courses) {
+    public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
 
-    public Curso getSelectedCourse() {
+    public Course getSelectedCourse() {
         return selectedCourse;
     }
 
-    public void setSelectedCourse(Curso selectedCourse) {
+    public void setSelectedCourse(Course selectedCourse) {
         this.selectedCourse = selectedCourse;
     }
 
-    public List<Curso> getSelectedCourses() {
+    public List<Course> getSelectedCourses() {
         return selectedCourses;
     }
 
-    public void setSelectedCourses(List<Curso> selectedCourses) {
+    public void setSelectedCourses(List<Course> selectedCourses) {
         this.selectedCourses = selectedCourses;
     }
 
     public void openNew() {
-        this.selectedCourse = new Curso();
+        this.selectedCourse = new Course();
     }
 
     public void refreshCourses() {
@@ -77,7 +73,7 @@ public class CursoBean implements Serializable {
     }
 
     public void saveCourse() {
-        if (selectedCourse.getCodigo() == null) {
+        if (selectedCourse.getCode() == null) {
             repo.save(selectedCourse);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Curso adicionado"));
         } else {

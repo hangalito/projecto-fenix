@@ -21,5 +21,6 @@ Any value defined here will override the pom.xml file value but is only applicab
         <word>Nascimento</word>
         <word>Preço</word>
         <word>Projecto</word>
+        <word>Telefone</word>
     </spellchecker-wordlist>
 </project-shared-configuration>

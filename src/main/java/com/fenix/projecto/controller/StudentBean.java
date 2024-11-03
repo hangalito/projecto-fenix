@@ -1,9 +1,9 @@
 package com.fenix.projecto.controller;
 
-import com.fenix.projecto.model.Aluno;
-import com.fenix.projecto.model.Escola;
-import com.fenix.projecto.repository.AlunoRepository;
-import com.fenix.projecto.repository.EscolaRepository;
+import com.fenix.projecto.model.Student;
+import com.fenix.projecto.model.School;
+import com.fenix.projecto.repository.StudentRepository;
+import com.fenix.projecto.repository.SchoolRepository;
 import com.fenix.projecto.util.DateTimeConverter;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
@@ -17,21 +17,18 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author hangalo
- */
 @Named(value = "studentBean")
 @SessionScoped
 public class StudentBean implements Serializable {
 
     @Inject
-    private AlunoRepository repo;
+    private StudentRepository repo;
     @Inject
-    private EscolaRepository escolaRepository;
+    private SchoolRepository escolaRepository;
 
-    private List<Aluno> students;
-    private List<Aluno> selectedStudents;
-    private Aluno selectedStudent;
+    private List<Student> students;
+    private List<Student> selectedStudents;
+    private Student selectedStudent;
     private String birthdate;
 
     @PostConstruct
@@ -39,27 +36,27 @@ public class StudentBean implements Serializable {
         students = repo.findAll();
     }
 
-    public List<Aluno> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(List<Aluno> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 
-    public List<Aluno> getSelectedStudents() {
+    public List<Student> getSelectedStudents() {
         return selectedStudents;
     }
 
-    public void setSelectedStudents(List<Aluno> selectedStudents) {
+    public void setSelectedStudents(List<Student> selectedStudents) {
         this.selectedStudents = selectedStudents;
     }
 
-    public Aluno getSelectedStudent() {
+    public Student getSelectedStudent() {
         return selectedStudent;
     }
 
-    public void setSelectedStudent(Aluno selectedStudent) {
+    public void setSelectedStudent(Student selectedStudent) {
         this.selectedStudent = selectedStudent;
     }
 
@@ -72,7 +69,7 @@ public class StudentBean implements Serializable {
     }
 
     public void openNew() {
-        selectedStudent = new Aluno();
+        selectedStudent = new Student();
     }
 
     public void refreshPage() {
@@ -86,8 +83,8 @@ public class StudentBean implements Serializable {
 
     public void saveStudent() {
         String msg;
-        selectedStudent.setDataDeNascimento(DateTimeConverter.convertToDate(birthdate));
-        if (selectedStudent.getCodigo() == null) {
+        selectedStudent.setBirthdate(DateTimeConverter.convertToDate(birthdate));
+        if (selectedStudent.getCode() == null) {
             repo.save(selectedStudent);
             msg = "Aluno cadastrado";
         } else {
@@ -135,25 +132,25 @@ public class StudentBean implements Serializable {
                 "Esta funcionalidade ainda não está disponivel."));
     }
 
-    public List<Escola> getSchools() {
+    public List<School> getSchools() {
         return escolaRepository.findAll();
     }
 
     public List<String> completeTextStates(String query) {
         return students.stream()
-                .map(Aluno::getMunicipio)
+                .map(Student::getState)
                 .filter((String state) -> state.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<String> completeTextDistricts(String query) {
-        return students.stream().map(Aluno::getDistrito)
+        return students.stream().map(Student::getDistrict)
                 .filter((String d) -> d.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<String> completeTextNeighbourhoods(String query) {
-        return students.stream().map(Aluno::getBairro)
+        return students.stream().map(Student::getNeighbourhood)
                 .filter((String n) -> n.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
