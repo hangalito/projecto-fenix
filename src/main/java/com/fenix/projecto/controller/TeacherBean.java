@@ -31,6 +31,7 @@ public class TeacherBean implements Serializable {
         teachers = repository.findAll();
     }
 
+    //<editor-fold desc="Getters and Setters">
     public List<Teacher> getTeachers() {
         return teachers;
     }
@@ -62,6 +63,7 @@ public class TeacherBean implements Serializable {
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
+    //</editor-fold>
 
     public void loadTeachers() {
         teachers = repository.findAll();
@@ -88,7 +90,7 @@ public class TeacherBean implements Serializable {
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
         loadTeachers();
-        PrimeFaces.current().executeScript("PR('manageTeachersDialog').hide()");
+        PrimeFaces.current().executeScript("PF('manageTeachersDialog').hide()");
         PrimeFaces.current().ajax().update(":main:messages", ":main:dt-teachers");
     }
 

@@ -8,12 +8,13 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "professor")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Teacher.findAll", query = "SELECT t FROM Teacher t WHERE t.deleted = false"),
+    @NamedQuery(name = "Teacher.findAll", query = "SELECT t FROM Teacher t WHERE NOT t.deleted"),
     @NamedQuery(name = "Teacher.findByCode", query = "SELECT t FROM Teacher t WHERE t.code = :code"),
     @NamedQuery(name = "Teacher.findByName", query = "SELECT t FROM Teacher t WHERE t.name = :name"),
     @NamedQuery(name = "Teacher.findBySurname", query = "SELECT t FROM Teacher t WHERE t.surname = :surname"),
@@ -62,6 +63,22 @@ public class Teacher implements Serializable, Comparable<Teacher> {
     @Column(name = "municipio_professor")
     private String state;
 
+    @Size(max = 16)
+    @Column(name = "tel_unitel_professor")
+    private String telUnitel;
+
+    @Size(max = 16)
+    @Column(name = "tel_movicel_professor")
+    private String telMovicel;
+
+    @Size(max = 16)
+    @Column(name = "tel_africell_professor")
+    private String telAfricell;
+
+    @Size(max = 70)
+    @Column(name = "email_professor")
+    private String email;
+
     @Column(name = "eliminado")
     private Boolean deleted;
 
@@ -69,13 +86,10 @@ public class Teacher implements Serializable, Comparable<Teacher> {
     @ManyToOne(fetch = FetchType.LAZY)
     private Province province;
 
-    @JoinColumn(name = "codigo_professor", referencedColumnName = "codigo_professor")
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Contact> contacts;
-
     public Teacher() {
     }
 
+    //<editor-fold desc="Getters and Setters">
     public Integer getCode() {
         return code;
     }
@@ -140,6 +154,38 @@ public class Teacher implements Serializable, Comparable<Teacher> {
         this.state = state;
     }
 
+    public String getTelUnitel() {
+        return telUnitel;
+    }
+
+    public void setTelUnitel(String telUnitel) {
+        this.telUnitel = telUnitel;
+    }
+
+    public String getTelMovicel() {
+        return telMovicel;
+    }
+
+    public void setTelMovicel(String telMovicel) {
+        this.telMovicel = telMovicel;
+    }
+
+    public String getTelAfricell() {
+        return telAfricell;
+    }
+
+    public void setTelAfricell(String telAfricell) {
+        this.telAfricell = telAfricell;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Boolean getDeleted() {
         return deleted;
     }
@@ -155,34 +201,45 @@ public class Teacher implements Serializable, Comparable<Teacher> {
     public void setProvince(Province province) {
         this.province = province;
     }
-
-    public List<Contact> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
+    //</editor-fold>
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (code != null ? code.hashCode() : 0);
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.code);
+        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.surname);
+        hash = 97 * hash + Objects.hashCode(this.birthdate);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Teacher)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Teacher other = (Teacher) object;
-        return !((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code)));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Teacher other = (Teacher) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.surname, other.surname)) {
+            return false;
+        }
+        if (!Objects.equals(this.code, other.code)) {
+            return false;
+        }
+        return Objects.equals(this.birthdate, other.birthdate);
     }
 
     @Override
     public String toString() {
-        return "Teacher{" + "code=" + code + ", name=" + name + ", surname=" + surname + ", birthdate=" + birthdate + ", address=" + address + ", neighbourhood=" + neighbourhood + ", district=" + district + ", state=" + state + ", deleted=" + deleted + ", province=" + province.getName() + '}';
+        return "Teacher{" + "code=" + code + ", name=" + name + ", surname=" + surname + ", birthdate=" + birthdate + ", address=" + address + ", neighbourhood=" + neighbourhood + ", district=" + district + ", state=" + state + ", telUnitel=" + telUnitel + ", telMovicel=" + telMovicel + ", telAfricell=" + telAfricell + ", deleted=" + deleted + ", province=" + province + '}';
     }
 
     @Override

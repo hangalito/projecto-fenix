@@ -29,6 +29,7 @@ public class TeacherRepository {
     }
 
     public Teacher save(Teacher e) {
+        e.setDeleted(false);
         em.persist(e);
         return e;
     }
