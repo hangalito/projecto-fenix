@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
 @Named("teacherBean")
 @SessionScoped
 public class TeacherBean implements Serializable {
+
     @Inject
     private TeacherRepository repository;
+    private Teacher selectedTeacher;
     private List<Teacher> teachers;
     private List<Teacher> selectedTeachers;
-    private Teacher selectedTeacher;
+    private List<Teacher> deletedTeachers;
 
     private String birthdate;
 
@@ -63,6 +65,14 @@ public class TeacherBean implements Serializable {
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
+
+    public List<Teacher> getDeletedTeachers() {
+        return deletedTeachers;
+    }
+
+    public void setDeletedTeachers(List<Teacher> deletedTeachers) {
+        this.deletedTeachers = deletedTeachers;
+    }
     //</editor-fold>
 
     public void loadTeachers() {
@@ -95,7 +105,9 @@ public class TeacherBean implements Serializable {
     }
 
     public void deleteTeacher() {
-        selectedTeachers.remove(selectedTeacher);
+        if (selectedTeachers != null) {
+            selectedTeachers.remove(selectedTeacher);
+        }
         repository.delete(selectedTeacher);
         loadTeachers();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Professor eliminado com sucesso"));
@@ -111,7 +123,7 @@ public class TeacherBean implements Serializable {
     }
 
     public boolean hasSelectedTeachers() {
-        return selectedTeacher != null && !selectedTeachers.isEmpty();
+        return selectedTeachers != null && !selectedTeachers.isEmpty();
     }
 
     public void deleteSelectedStudents() {
@@ -123,7 +135,19 @@ public class TeacherBean implements Serializable {
         PrimeFaces.current().executeScript("PF('dtTeachers).clearFilters()");
     }
 
-    //<editor-fold des="Auto-Complete Methods">
+    public void loadDeletedTeachers() {
+        deletedTeachers = repository.findAllDeleted();
+    }
+
+    public void restoreTeacher() {
+        repository.restore(selectedTeacher);
+        loadTeachers();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Professor restaurado com sucesso"));
+        PrimeFaces.current().executeScript("PF('manageDeletedTeachersDialog').hide()");
+        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-teachers");
+    }
+
+    //<editor-fold desc="Auto-Complete Methods">
     public List<String> completeTextNeighbourhood(String query) {
         return teachers.stream().map(Teacher::getNeighbourhood)
                 .filter((String n) -> n.toLowerCase().contains(query.toLowerCase()))
