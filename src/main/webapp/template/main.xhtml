@@ -1,69 +1,58 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="pt-AO" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:h="jakarta.faces.html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="jakarta.faces.core">
 
-<h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <h:outputStylesheet name="css/default.css"/>
-    <h:outputStylesheet name="css/cssLayout.css"/>
-    <h:outputStylesheet name="css/students.css"/>
-    <title>Projecto Fenix</title>
-</h:head>
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <h:outputStylesheet name="css/default.css"/>
+        <h:outputStylesheet name="css/cssLayout.css"/>
+        <h:outputStylesheet name="css/students.css"/>
+        <title>Projecto Fenix</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
 
-<h:body>
+    <h:body>
+        <p:outputPanel class="wrapper">
 
-    <div id="top" class="top">
-        <ui:insert name="top">
-            <div class="card">
-                <h:form>
-                    <p:growl id="messages"/>
+            <div id="top" class="top">
+                <ui:insert name="top">
+                    <div class="card">
+                        <h:form>
+                            <p:tabMenu orientation="top" activeIndex="${param.tab}" styleClass="tabMenu">
 
-                    <p:menubar hideDelay="1000">
-                        <f:facet name="start">
-                            <p:graphicImage name="images/fenix-logo.svg" library="showcase"/>
-                        </f:facet>
-
-                        <p:menuitem value="Dashboard" icon="pi pi-fw pi-chart-bar"/>
-
-                        <p:menuitem value="Alunos" icon="pi pi-fw pi-user" url="alunos.faces"/>
-
-                        <p:menuitem value="Cursos" icon="pi pi-book" url="cursos.faces"/>
-
-                        <p:menuitem value="Turmas" icon="pi pi-fw pi-th-large" url="turmas.faces"/>
-
-                        <p:menuitem value="Professores" icon="pi pi-user-outline" url="professores.faces"/>
-                        
-                        <p:menuitem value="Escolas" icon="pi pi-home" url="escolas.faces"/>
-
-                        <p:divider layout="vertical"/>
-
-                        <p:menuitem value="Quit" icon="pi pi-fw pi-power-off"/>
-
-                        <f:facet name="end">
-                            <!--TODO: enable global search -->
-                            <!--
-                            <div class="ui-input-icon-left mr-2">
-                                <i class="pi pi-fw pi-search" />
-                                <p:inputText placeholder="Search"/>
-                            </div>
-                            -->
-                            <p:button value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info"/>
-                        </f:facet>
-                    </p:menubar>
-                </h:form>
+                                <p:menuitem value="Dashboard" icon="pi pi-cahrt-bar" outcome="index">
+                                    <f:param name="tab" value="0"/>
+                                </p:menuitem>
+                                <p:menuitem value="Cursos" icon="pi pi-book" outcome="cursos">
+                                    <f:param name="tab" value="1"/>
+                                </p:menuitem>
+                                <p:menuitem value="Alunos" icon="pi pi-user" outcome="alunos">
+                                    <f:param name="tab" value="2"/>
+                                </p:menuitem>
+                                <p:menuitem value="Professores" icon="pi pi-box" outcome="professores">
+                                    <f:param name="tab" value="3"/>
+                                </p:menuitem>
+                                <p:menuitem value="Turmas" icon="pi pi-th-large" outcome="turmas">
+                                    <f:param name="tab" value="4"/>
+                                </p:menuitem>
+                                <p:menuitem value="Escolas" icon="pi pi-home" outcome="escolas">
+                                    <f:param name="tab" value="5"/>
+                                </p:menuitem>
+                            </p:tabMenu>
+                        </h:form>
+                    </div>
+                </ui:insert>
             </div>
-        </ui:insert>
-    </div>
 
-    <div id="content" class="center_content">
-        <ui:insert name="content">Content</ui:insert>
-    </div>
-
-</h:body>
+            <div id="content" class="center_content">
+                <ui:insert name="content">Content</ui:insert>
+            </div>
+        </p:outputPanel>
+    </h:body>
 
 </html>
