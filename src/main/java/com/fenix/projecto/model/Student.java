@@ -16,7 +16,8 @@ import java.util.Objects;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s where s.deleted = false"),
-    @NamedQuery(name = "Student.findByCode", query = "SELECT s FROM Student s WHERE s.code = :code and s.deleted = false")
+    @NamedQuery(name = "Student.findByCode", query = "SELECT s FROM Student s WHERE s.code = :code and s.deleted = false"),
+    @NamedQuery(name="Student.findAllDeleted",query = "SELECT s FROM Student s WHERE s.deleted = true")
 })
 public class Student implements Serializable, Comparable<Student> {
 

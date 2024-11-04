@@ -21,6 +21,11 @@ public class StudentRepository {
                 .getResultList();
     }
 
+    public List<Student> findAllDeleted() {
+        return em.createNamedQuery("Student.findAllDeleted", Student.class)
+                .getResultList();
+    }
+
     public Optional<Student> findById(Integer id) {
         return em.createNamedQuery("Student.findByCode", Student.class)
                 .setParameter("code", id)
@@ -45,6 +50,11 @@ public class StudentRepository {
 
     public void delete(Student e) {
         e.setDeleted(true);
+        update(e);
+    }
+
+    public void restore(Student e) {
+        e.setDeleted(false);
         update(e);
     }
 

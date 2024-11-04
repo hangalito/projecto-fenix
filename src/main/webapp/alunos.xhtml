@@ -35,6 +35,10 @@
                             <p:commandButton icon="pi pi-refresh" styleClass="ui-button-secondary rounded-button"
                                              ajax="false" actionListener="#{studentBean.refreshPage()}"
                                              style="margin-right: .5rem"/>
+                            <p:commandButton id="show-deleted-students-button" icon="pi pi-trash" styleClass="rounded-button"
+                                             update=":dialogs:dt-deleted-teachers" actionListener="#{studentBean.loadDeletedStudents}"
+                                             oncomplete="PF('manageDeletedStudentsDialog').show()"/>
+                            <p:tooltip for="show-deleted-students-button" value="Ver os alunos eliminados"/>
                         </p:toolbarGroup>
                     </p:toolbar>
 
@@ -85,7 +89,7 @@
                             <h:outputText value="#{empty student.telephone ? 'N/A' : student.telephone}"/>
                         </p:column>
 
-                        <p:column exportable="false" ariaHeaderText="Actions">
+                        <p:column exportable="false" ariaHeaderText="Actions" width="10%">
                             <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-students-content"
                                              oncomplete="PF('manageStudentsDialog').show()" process="@this"
                                              styleClass="edit-button rounded-button ui-button-success" style="margin: 4px">
@@ -216,17 +220,60 @@
                         </f:facet>
                     </p:dialog>
 
+                    <p:dialog header="Alunos eliminados" showEffect="fade" modal="true" widgetVar="manageDeletedStudentsDialog"
+                              responsive="true" maximizable="true" id="manage-deleted-student-dialog" fitViewport="true" height="75vh" width="75vw">
+                        <p:dataTable id="dt-deleted-teachers" widgetVar="dtDeletedTeachers" var="ds"
+                                     value="#{studentBean.deletedStudents}" reflow="true" 
+                                     selection="#{studentBean.selectedStudents}" selectionRowMode="add"
+                                     rowKey="#{ds.code}" paginator="true" rows="10"
+                                     paginatorPosition="bottom">
+
+                            <f:facet name="header">
+                                <p:commandButton id="restore-students-button" value="#{studentBean.restoreMessage}"
+                                                 actionListener="#{studentBean.restoreStudent}"
+                                                 disabled="#{not studentBean.hasSelectedStudents()}"/>
+                            </f:facet>
+
+                            <p:ajax event="rowSelect" update="restore-students-button"/>
+                            <p:ajax event="rowUnselect" update="restore-students-button"/>
+                            <p:ajax event="rowSelectCheckbox" update="restore-students-button"/>
+                            <p:ajax event="rowUnselectCheckbox" update="restore-students-button"/>
+                            <p:ajax event="toggleSelect" update="restore-students-button"/>
+
+                            <p:column headerText="Código" sortBy="#{ds.code}">
+                                <h:outputText value="#{ds.code}"/>
+                            </p:column>
+                            <p:column headerText="Nome" sortBy="#{ds.name}">
+                                <h:outputText value="#{ds.name}"/>
+                            </p:column>
+                            <p:column headerText="Sobrenome" sortBy="#{ds.surname}">
+                                <h:outputText value="#{ds.surname}"/>
+                            </p:column>
+                            <p:column headerText="Data de Nascimento" sortBy="#{ds.birthdate}">
+                                <h:outputText value="#{ds.birthdate}">
+                                    <f:convertDateTime locale="pt_AO" type="date" pattern="dd MMM YYYY"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Escola" sortBy="#{ds.school.name}">
+                                <h:outputText value="#{ds.school.name}"/>
+                            </p:column>
+                            <p:column headerText="Telefone" sortBy="#{ds.telephone}">
+                                <h:outputText value="#{empty ds.telephone ? 'N/A' : ds.telephone}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+
                     <p:confirmDialog widgetVar="deleteStudentDialog" showEffect="fade" width="300"
                                      message="Eliminar o aluno selecionado?" header="Confirmar" severity="warn">
                         <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{studentBean.deleteStudent}"
-                                         process="@this" update=":main:delete-students-button"
+                                         process="@this" update=":main:delete-students-button" styleClass="ui-button-danger"
                                          oncomplete="PF('deleteStudentDialog').hide()"/>
                         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                          onclick="PF('deleteStudentDialog').hide()"/>
                     </p:confirmDialog>
 
                     <p:confirmDialog global="true" showEffect="fade" width="300">
-                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes ui-button-danger" icon="pi pi-check"/>
                         <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
                                          icon="pi pi-times"/>
                     </p:confirmDialog>

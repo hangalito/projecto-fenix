@@ -28,6 +28,7 @@ public class StudentBean implements Serializable {
 
     private List<Student> students;
     private List<Student> selectedStudents;
+    private List<Student> deletedStudents;
     private Student selectedStudent;
     private String birthdate;
 
@@ -36,6 +37,7 @@ public class StudentBean implements Serializable {
         students = repo.findAll();
     }
 
+    //<editor-fold desc="Getters and Setters">
     public List<Student> getStudents() {
         return students;
     }
@@ -50,6 +52,14 @@ public class StudentBean implements Serializable {
 
     public void setSelectedStudents(List<Student> selectedStudents) {
         this.selectedStudents = selectedStudents;
+    }
+
+    public List<Student> getDeletedStudents() {
+        return deletedStudents;
+    }
+
+    public void setDeletedStudents(List<Student> deletedStudents) {
+        this.deletedStudents = deletedStudents;
     }
 
     public Student getSelectedStudent() {
@@ -67,6 +77,7 @@ public class StudentBean implements Serializable {
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
+    //</editor-fold>
 
     public void openNew() {
         selectedStudent = new Student();
@@ -97,7 +108,9 @@ public class StudentBean implements Serializable {
     }
 
     public void deleteStudent() {
-        selectedStudents.remove(selectedStudent);
+        if (selectedStudents != null) {
+            selectedStudents.remove(selectedStudent);
+        }
         repo.delete(selectedStudent);
         loadStudents();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Aluno eliminado"));
@@ -136,6 +149,30 @@ public class StudentBean implements Serializable {
         return escolaRepository.findAll();
     }
 
+    public void loadDeletedStudents() {
+        deletedStudents = repo.findAllDeleted();
+        selectedStudent = null;
+        selectedStudents.clear();
+    }
+
+    public void restoreStudent() {
+        selectedStudents.forEach(repo::restore);
+        selectedStudents.clear();
+        selectedStudents = null;
+        loadStudents();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Aluno restaurado com sucesso"));
+        PrimeFaces.current().executeScript("PF('manageDeletedStudentsDialog').hide()");
+        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-students", ":main:delete-student-button");
+    }
+
+    public String getRestoreMessage() {
+        if (hasSelectedStudents()) {
+            return getDeleteButtonMessage();
+        }
+        return "Restaurar";
+    }
+
+    //<editor-fold desc="Auto-complete text methods">
     public List<String> completeTextStates(String query) {
         return students.stream()
                 .map(Student::getState)
@@ -154,5 +191,5 @@ public class StudentBean implements Serializable {
                 .filter((String n) -> n.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
-
+    //</editor-fold>
 }
