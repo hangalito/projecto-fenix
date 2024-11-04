@@ -151,14 +151,14 @@
                     <p:confirmDialog widgetVar="deleteCourseDialog" showEffect="fade" width="300"
                                      message="Tem a certeza de que quer eliminar este curso?" header="Confirmar exclusão" severity="warn">
                         <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{courseBean.deleteCourse}"
-                                         process="@this" update=":main:delete-courses-button"
+                                         process="@this" update=":main:delete-courses-button" styleClass="ui-button-danger"
                                          oncomplete="PF('deleteCourseDialog').hide()"/>
                         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                          onclick="PF('deleteCourseDialog').hide()"/>
                     </p:confirmDialog>
 
                     <p:confirmDialog global="true" showEffect="fade" width="300">
-                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes ui-button-danger" icon="pi pi-check"/>
                         <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
                                          icon="pi pi-times"/>
                     </p:confirmDialog>

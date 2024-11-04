@@ -251,13 +251,13 @@
                                      message="Eliminar o professor selecionado?" header="Confirmar" severity="warn">
                         <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{teacherBean.deleteTeacher}"
                                          process="@this" update=":main:delete-teachers-button"
-                                         oncomplete="PF('deleteTeacherDialog').hide()"/>
+                                         oncomplete="PF('deleteTeacherDialog').hide()" styleClass="ui-button-danger"/>
                         <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                          onclick="PF('deleteTeacherDialog').hide()"/>
                     </p:confirmDialog>
 
                     <p:confirmDialog global="true" showEffect="fade" width="300">
-                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes ui-button-danger" icon="pi pi-check"/>
                         <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
                                          icon="pi pi-times"/>
                     </p:confirmDialog>
