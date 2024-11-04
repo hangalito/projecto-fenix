@@ -6,9 +6,9 @@ import com.fenix.projecto.repository.StudentRepository;
 import com.fenix.projecto.repository.SchoolRepository;
 import com.fenix.projecto.util.DateTimeConverter;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.primefaces.PrimeFaces;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Named(value = "studentBean")
-@SessionScoped
+@ViewScoped
 public class StudentBean implements Serializable {
 
     @Inject

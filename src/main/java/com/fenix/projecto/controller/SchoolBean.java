@@ -4,9 +4,9 @@ import com.fenix.projecto.model.School;
 import com.fenix.projecto.repository.SchoolRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import org.primefaces.PrimeFaces;
 
 @Named(value = "schoolBean")
-@SessionScoped
+@ViewScoped
 public class SchoolBean implements Serializable {
 
     @Inject

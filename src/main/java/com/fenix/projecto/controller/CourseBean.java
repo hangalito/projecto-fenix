@@ -3,17 +3,17 @@ package com.fenix.projecto.controller;
 import com.fenix.projecto.model.Course;
 import com.fenix.projecto.repository.CourseRepository;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 import org.primefaces.PrimeFaces;
 
 @Named(value = "courseBean")
-@SessionScoped
+@ViewScoped
 public class CourseBean implements Serializable {
 
     @Inject

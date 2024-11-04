@@ -4,9 +4,9 @@ import com.fenix.projecto.model.Teacher;
 import com.fenix.projecto.repository.TeacherRepository;
 import com.fenix.projecto.util.DateTimeConverter;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.primefaces.PrimeFaces;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Named("teacherBean")
-@SessionScoped
+@ViewScoped
 public class TeacherBean implements Serializable {
 
     @Inject

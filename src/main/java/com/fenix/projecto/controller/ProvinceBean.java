@@ -3,14 +3,14 @@ package com.fenix.projecto.controller;
 import com.fenix.projecto.model.Province;
 import com.fenix.projecto.repository.ProvinceRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
 @Named(value = "provinceBean")
-@SessionScoped
+@ApplicationScoped
 public class ProvinceBean implements Serializable {
 
     @Inject
