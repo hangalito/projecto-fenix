@@ -31,6 +31,7 @@ public class SchoolBean implements Serializable {
         schools = repository.findAll();
     }
 
+    //<editor-fold desc="Getters and Setters">
     public SchoolRepository getRepository() {
         return repository;
     }
@@ -62,6 +63,7 @@ public class SchoolBean implements Serializable {
     public void setSchools(List<School> schools) {
         this.schools = schools;
     }
+    //</editor-fold>
 
     public void loadSchools() {
         schools = repository.findAll();
@@ -93,6 +95,35 @@ public class SchoolBean implements Serializable {
 
     public int numOfStudents(School school) {
         return school.getStudents().size();
+    }
+
+    public boolean hasSeletedSchools() {
+        return selectedSchools != null && !selectedSchools.isEmpty();
+    }
+
+    public String getDeleteMessage() {
+        if (hasSeletedSchools()) {
+            int size = selectedSchools.size();
+            return size > 1 ? size + " escolas selecionadas" : "1 escola selecionada";
+        }
+        return "Eliminar";
+    }
+
+    public void deleteSelectedSchools() {
+        selectedSchools.forEach(repository::delete);
+        schools.removeAll(selectedSchools);
+        selectedSchools = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escolas eliminadas com sucesso"));
+        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-schools");
+        PrimeFaces.current().executeScript("PF('dtSchools').clearFilters()");
+    }
+
+    public void deleteSchool() {
+        selectedSchools.remove(selectedSchool);
+        repository.delete(selectedSchool);
+        loadSchools();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escola eliminada"));
+        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-schools");
     }
 
     //<editor-fold desc="Auto-complete methods">

@@ -17,11 +17,17 @@
 
                     <p:toolbar>
                         <p:toolbarGroup>
-                            <p:commandButton value="Adicionar" class="ui-button-success" icon="pi pi-plus"
+                            <p:commandButton id="add-school-button" value="Adicionar" class="ui-button-success" icon="pi pi-plus"
                                              actionListener="#{schoolBean.openNew}" style="margin-right: .5rem"
                                              update=":dialogs:manage-schools-content"
                                              oncomplete="PF('manageSchoolsDialog').show()"/>
-                            <p:commandButton value="Eliminar" class="ui-button-danger" icon="pi pi-trash"/>
+                            <p:commandButton id="delete-school-button" value="#{schoolBean.deleteMessage}" 
+                                             class="ui-button-danger" icon="pi pi-trash" 
+                                             disabled="#{not schoolBean.hasSeletedSchools()}"
+                                             actionListener="#{schoolBean.deleteSelectedSchools}">
+                                <p:confirm header="Confirmação" message="Tem a certeza de que quer eliminar as escolas selecionadas?"
+                                           icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
                         </p:toolbarGroup>
 
                         <p:toolbarGroup align="right">
@@ -35,6 +41,10 @@
                     <p:dataTable id="dt-schools" widgetVar="dtSchools" value="${schoolBean.schools}" var="school"
                                  selectionMode="multiple" selection="${schoolBean.selectedSchools}" rowKey="${school.code}"
                                  reflow="true" selectionRowMode="add" rows="10" paginator="true" paginatorPosition="bottom">
+
+                        <p:ajax event="rowSelect" update=":main:delete-school-button"/>
+                        <p:ajax event="rowUnselect" update=":main:delete-school-button"/>
+                        <p:ajax event="toggleSelect" update=":main:delete-school-button"/>
 
                         <p:column headerText="Código" sortBy="${school.code}" filterBy="${school.code}" filterStyle="display: none">
                             <h:outputText value="${school.code}"/>
@@ -50,6 +60,19 @@
 
                         <p:column headerText="Nº. Alunos" filterStyle="display: none">
                             <h:outputText value="#{schoolBean.numOfStudents(school)}"/>
+                        </p:column>
+
+                        <p:column exportable="false" ariaHeaderText="Actions">
+                            <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-schools-content"
+                                             oncomplete="PF('manageSchoolsDialog').show()" process="@this"
+                                             styleClass="edit-button rounded-button ui-button-success" style="margin: 4px">
+                                <f:setPropertyActionListener value="#{school}" target="#{schoolBean.selectedSchool}"/>
+                                <p:resetInput target=":dialogs:manage-students-content"/>
+                            </p:commandButton>
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                             process="@this" oncomplete="PF('deleteSchoolDialog').show()" style="margin: 4px">
+                                <f:setPropertyActionListener value="#{school}" target="#{schoolBean.selectedSchool}"/>
+                            </p:commandButton>
                         </p:column>
 
                     </p:dataTable>
@@ -108,6 +131,22 @@
                                              onclick="PF('manageSchoolsDialog').hide()"/>
                         </f:facet>
                     </p:dialog>
+
+                    <p:confirmDialog header="Confirmar exclusão" closable="true" severity="warn" 
+                                     message="Tem a certeza de que quer eliminar as escolas selecionadas?" 
+                                     width="300" widgetVar="deleteSchoolDialog">
+                        <p:commandButton value="Sim" class="ui-button-danger" icon="pi pi-check" update=":main:delete-school-button"
+                                         process="@this" actionListener="#{schoolBean.deleteSchool}"
+                                         oncomplete="PF('deleteSchoolDialog').hide()"/>
+                        <p:commandButton value="Não" class="ui-button-secondary" icon="pi pi-times"
+                                         onclick="PF('deleteSchoolDialog').hide()"/>
+                    </p:confirmDialog>
+
+                    <p:confirmDialog global="true" showEffect="fade" width="300">
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                         icon="pi pi-times"/>
+                    </p:confirmDialog>
                 </h:form>
             </ui:define>
 
