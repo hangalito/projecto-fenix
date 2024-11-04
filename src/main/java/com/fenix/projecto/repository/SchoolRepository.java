@@ -37,6 +37,7 @@ public class SchoolRepository {
     }
 
     public School save(School e) {
+        e.setDeleted(Boolean.FALSE);
         em.persist(e);
         return e;
     }

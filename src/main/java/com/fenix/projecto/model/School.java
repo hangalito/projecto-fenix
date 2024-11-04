@@ -6,6 +6,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -50,6 +51,10 @@ public class School implements Serializable, Comparable<School> {
     @JoinColumn(name = "codigo_provincia", referencedColumnName = "codigo_provincia")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Province province;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "school")
+    @JoinColumn(name = "codigo_escola", referencedColumnName = "codigo_escola")
+    private List<Student> students;
 
     @Column(name = "eliminada", nullable = false)
     private Boolean deleted;
@@ -111,6 +116,14 @@ public class School implements Serializable, Comparable<School> {
 
     public void setProvince(Province province) {
         this.province = province;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 
     public Boolean getDeleted() {

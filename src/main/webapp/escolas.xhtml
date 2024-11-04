@@ -1,14 +1,114 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="pt-AO" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
 
     <body>
 
         <ui:composition template="./template/main.xhtml">
 
             <ui:define name="content">
-                escolas
+
+                <h:form id="main">
+                    <p:growl id="messages" showDetail="true"/>
+
+                    <p:toolbar>
+                        <p:toolbarGroup>
+                            <p:commandButton value="Adicionar" class="ui-button-success" icon="pi pi-plus"
+                                             actionListener="#{schoolBean.openNew}" style="margin-right: .5rem"
+                                             update=":dialogs:manage-schools-content"
+                                             oncomplete="PF('manageSchoolsDialog').show()"/>
+                            <p:commandButton value="Eliminar" class="ui-button-danger" icon="pi pi-trash"/>
+                        </p:toolbarGroup>
+
+                        <p:toolbarGroup align="right">
+                            <p:commandButton id="refresh-page-button" icon="pi pi-refresh" ajax="false"
+                                             actionListener="${schoolBean.refreshPage()}"
+                                             class="ui-button-secondary rounded-button"/>
+                            <p:tooltip value="Actualizar a página" for="refresh-page-button"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+
+                    <p:dataTable id="dt-schools" widgetVar="dtSchools" value="${schoolBean.schools}" var="school"
+                                 selectionMode="multiple" selection="${schoolBean.selectedSchools}" rowKey="${school.code}"
+                                 reflow="true" selectionRowMode="add" rows="10" paginator="true" paginatorPosition="bottom">
+
+                        <p:column headerText="Código" sortBy="${school.code}" filterBy="${school.code}" filterStyle="display: none">
+                            <h:outputText value="${school.code}"/>
+                        </p:column>
+
+                        <p:column headerText="Nome" sortBy="${school.name}" filterBy="${school.name}" filterStyle="display: none">
+                            <h:outputText value="${school.name}"/>
+                        </p:column>
+
+                        <p:column headerText="Provincia" sortBy="${school.province.name}" filterBy="${school.province.name}" filterStyle="display: none">
+                            <h:outputText value="${school.province.name}"/>
+                        </p:column>
+
+                        <p:column headerText="Nº. Alunos" filterStyle="display: none">
+                            <h:outputText value="#{schoolBean.numOfStudents(school)}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+
+                <h:form id="dialogs">
+                    <p:dialog id="school-details" header="Detalhes da Escola" showEffect="fade" modal="false"
+                              widgetVar="manageSchoolsDialog" responsive="true" fitViewport="true" maximizable="true">
+
+                        <p:outputPanel id="manage-schools-content">
+                            <p:outputPanel rendered="#{not empty schoolBean.selectedSchool}" class="ui-fluid">
+                                <div class="field">
+                                    <p:outputLabel value="Nome" for="school-name"/>
+                                    <p:inputText id="school-name" value="#{schoolBean.selectedSchool.name}" placeholder="Nome" required="true"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel value="Endereço" for="address"/>
+                                    <p:inputText id="address" value="#{schoolBean.selectedSchool.address}" 
+                                                 placeholder="Endereço"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel value="Bairro" for="neighbourhood"/>
+                                    <p:autoComplete id="neighbourhood" value="#{schoolBean.selectedSchool.neighbourhood}"
+                                                    completeMethod="#{schoolBean.autoCompleteNeighbourhoods}"
+                                                    placeholder="Bairro"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel value="Distrito" for="district"/>
+                                    <p:autoComplete id="district" value="#{schoolBean.selectedSchool.district}"
+                                                    completeMethod="#{schoolBean.autoCompleteDistricts}"
+                                                    placeholder="Distrito"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel value="Municipio" for="state"/>
+                                    <p:autoComplete id="state" value="#{schoolBean.selectedSchool.state}"
+                                                    completeMethod="#{schoolBean.autoCompleteStates}"
+                                                    placeholder="Municipio"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="province" value="Provincia"/>
+                                    <p:selectOneMenu id="province" value="#{schoolBean.selectedSchool.province}"
+                                                     converter="provinceConverter">
+                                        <f:selectItem itemLabel="Selecione uma provincia" itemValue=""/>
+                                        <f:selectItems value="#{provinceBean.provincias}" var="prov" 
+                                                       itemLabel="#{prov.name}" itemValue="#{prov.name}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </p:outputPanel>
+                        </p:outputPanel>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{schoolBean.save}"
+                                             update="manage-schools-content" process="manage-schools-content @this"/>
+                            <p:commandButton value="Cancelar" icon="pi pi-times" class="ui-button-secondary"
+                                             onclick="PF('manageSchoolsDialog').hide()"/>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
             </ui:define>
 
         </ui:composition>
