@@ -16,9 +16,13 @@ public class SchoolRepository {
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
 
-
     public List<School> findAll() {
         return em.createNamedQuery("School.findAll", School.class)
+                .getResultList();
+    }
+
+    public List<School> findAllDeleted() {
+        return em.createNamedQuery("School.findAllDeleted", School.class)
                 .getResultList();
     }
 
@@ -31,7 +35,7 @@ public class SchoolRepository {
 
     public Optional<School> findByName(String name) {
         return em.createNamedQuery("School.findByName", School.class)
-                .setParameter("name",name)
+                .setParameter("name", name)
                 .getResultStream()
                 .findFirst();
     }
@@ -54,6 +58,11 @@ public class SchoolRepository {
     public void delete(School e) {
         e.setDeleted(true);
         update(e);
+    }
+
+    public void restore(School school) {
+        school.setDeleted(false);
+        update(school);
     }
 
 }

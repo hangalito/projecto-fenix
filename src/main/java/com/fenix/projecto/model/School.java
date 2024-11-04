@@ -15,7 +15,8 @@ import java.util.Objects;
 @NamedQueries({
     @NamedQuery(name = "School.findAll", query = "SELECT s FROM School s WHERE s.deleted = false"),
     @NamedQuery(name = "School.findByCode", query = "SELECT s FROM School s WHERE s.code = :code and s.deleted = false"),
-    @NamedQuery(name = "School.findByName", query = "SELECT s FROM School s WHERE s.name = :name and s.deleted = false")
+    @NamedQuery(name = "School.findByName", query = "SELECT s FROM School s WHERE s.name = :name and s.deleted = false"),
+    @NamedQuery(name = "School.findAllDeleted", query = "SELECT s FROM School s WHERE s.deleted = true")
 })
 public class School implements Serializable, Comparable<School> {
 

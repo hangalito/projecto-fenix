@@ -31,17 +31,26 @@
                         </p:toolbarGroup>
 
                         <p:toolbarGroup align="right">
-                            <p:commandButton id="refresh-page-button" icon="pi pi-refresh" ajax="false"
-                                             actionListener="${schoolBean.refreshPage()}"
-                                             class="ui-button-secondary rounded-button"/>
-                            <p:tooltip value="Actualizar a página" for="refresh-page-button"/>
+                            <div class="menitem" style="margin-right: .5rem">
+                                <p:commandButton id="refresh-page-button" icon="pi pi-refresh"
+                                                 actionListener="${schoolBean.refreshPage()}"
+                                                 class="ui-button-secondary rounded-button"/>
+                                <p:tooltip value="Actualizar a página" for="refresh-page-button"/>
+                            </div>
+                            <div class="menuitem">
+                                <p:commandButton id="show-deleted-schools-button" icon="pi pi-trash" 
+                                                 class="rounded-button" update=":dialogs:dt-deleted-schools"
+                                                 actionListener="#{schoolBean.loadDeletedSchools}"
+                                                 oncomplete="PF('manageDeletedSchoolsDialog').show()"/>
+                                <p:tooltip for="show-deleted-schools-button" value="Ver as escolas eliminadas"/>
+                            </div>
                         </p:toolbarGroup>
                     </p:toolbar>
 
                     <p:dataTable id="dt-schools" widgetVar="dtSchools" value="${schoolBean.schools}" var="school"
                                  selectionMode="multiple" selection="${schoolBean.selectedSchools}" rowKey="${school.code}"
                                  reflow="true" selectionRowMode="add" rows="10" paginator="true" paginatorPosition="bottom">
-                        
+
                         <f:facet name="header">
                             <div class="school-table-header">
                                 <span style="font-weight: bold">ESCOLAS</span>
@@ -77,7 +86,7 @@
                                              oncomplete="PF('manageSchoolsDialog').show()" process="@this"
                                              styleClass="edit-button rounded-button ui-button-success" style="margin: 4px">
                                 <f:setPropertyActionListener value="#{school}" target="#{schoolBean.selectedSchool}"/>
-                                <p:resetInput target=":dialogs:manage-students-content"/>
+                                <p:resetInput target=":dialogs:manage-schools-content"/>
                             </p:commandButton>
                             <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
                                              process="@this" oncomplete="PF('deleteSchoolDialog').show()" style="margin: 4px">
@@ -142,6 +151,40 @@
                         </f:facet>
                     </p:dialog>
 
+                    <p:dialog header="Escolas eliminadas" widgetVar="manageDeletedSchoolsDialog" id="manage-deleted-schools-dialog"
+                              showEffect="fade" hideEffect="fade" fitViewport="true" width="75vw" height="75vh" maximizable="true">
+                        <p:dataTable id="dt-deleted-schools" widgetVar="dtDeletedSchools" 
+                                     var="school" value="#{schoolBean.deletedSchools}"
+                                     selection="#{schoolBean.selectedSchools}" rows="10" reflow="true"
+                                     selectionRowMode="add" rowKey="#{school.code}"
+                                     paginator="true" paginatorPosition="bottom">
+                            <p:column headerText="Código" sortBy="${school.code}">
+                                <h:outputText value="${school.code}"/>
+                            </p:column>
+                            <f:facet name="header">
+                                <p:commandButton id="restore-schools-button" value="#{schoolBean.restoreMessage}"
+                                                 disabled="#{not schoolBean.hasSeletedSchools()}"
+                                                 actionListener="#{schoolBean.restoreSchools}"/>
+                            </f:facet>
+
+                            <p:ajax event="rowSelect" update="restore-schools-button"/>
+                            <p:ajax event="rowUnselect" update="restore-schools-button"/>
+                            <p:ajax event="toggleSelect" update="restore-schools-button"/>
+
+                            <p:column headerText="Nome" sortBy="${school.name}">
+                                <h:outputText value="${school.name}"/>
+                            </p:column>
+
+                            <p:column headerText="Provincia" sortBy="${school.province.name}">
+                                <h:outputText value="${school.province.name}"/>
+                            </p:column>
+
+                            <p:column headerText="Nº. Alunos">
+                                <h:outputText value="#{schoolBean.numOfStudents(school)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+
                     <p:confirmDialog header="Confirmar exclusão" closable="true" severity="warn" 
                                      message="Tem a certeza de que quer eliminar as escolas selecionadas?" 
                                      width="300" widgetVar="deleteSchoolDialog">
@@ -153,7 +196,7 @@
                     </p:confirmDialog>
 
                     <p:confirmDialog global="true" showEffect="fade" width="300">
-                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes ui-button-danger" icon="pi pi-check"/>
                         <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
                                          icon="pi pi-times"/>
                     </p:confirmDialog>

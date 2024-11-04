@@ -9,6 +9,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.primefaces.PrimeFaces;
@@ -22,6 +23,7 @@ public class SchoolBean implements Serializable {
     private School selectedSchool;
     private List<School> selectedSchools;
     private List<School> schools;
+    private List<School> deletedSchools;
 
     public SchoolBean() {
     }
@@ -62,6 +64,14 @@ public class SchoolBean implements Serializable {
 
     public void setSchools(List<School> schools) {
         this.schools = schools;
+    }
+
+    public List<School> getDeletedSchools() {
+        return deletedSchools;
+    }
+
+    public void setDeletedSchools(List<School> deletedSchools) {
+        this.deletedSchools = deletedSchools;
     }
     //</editor-fold>
 
@@ -114,16 +124,42 @@ public class SchoolBean implements Serializable {
         schools.removeAll(selectedSchools);
         selectedSchools = null;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escolas eliminadas com sucesso"));
-        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-schools");
+        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-schools", ":main:delete-school-button");
         PrimeFaces.current().executeScript("PF('dtSchools').clearFilters()");
     }
 
     public void deleteSchool() {
-        selectedSchools.remove(selectedSchool);
+        if (selectedSchools != null) {
+            selectedSchools.remove(selectedSchool);
+        }
         repository.delete(selectedSchool);
         loadSchools();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escola eliminada"));
         PrimeFaces.current().ajax().update(":main:messages", ":main:dt-schools");
+    }
+
+    public void loadDeletedSchools() {
+        deletedSchools = repository.findAllDeleted();
+        selectedSchools = new ArrayList<>();
+        selectedSchool = new School();
+    }
+
+    public void restoreSchools() {
+        selectedSchools.forEach(repository::restore);
+        loadSchools();
+        selectedSchools.clear();
+        selectedSchools = null;
+        selectedSchool = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Escola restaurada com sucesso"));
+        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-schools", ":main:delete-school-button");
+        PrimeFaces.current().executeScript("PF('manageDeletedSchoolsDialog').hide()");
+    }
+
+    public String getRestoreMessage() {
+        if (hasSeletedSchools()) {
+            return getDeleteMessage();
+        }
+        return "Restaurar";
     }
 
     //<editor-fold desc="Auto-complete methods">
