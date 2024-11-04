@@ -1,144 +1,144 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="pt-AO" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="jakarta.faces.facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core">
 
-<body>
+    <body>
 
-    <ui:composition template="./template/main.xhtml">
+        <ui:composition template="./template/main.xhtml">
 
-    <ui:define name="content">
-        <h:form id="main" enctype="multipart/form-data">
-            <p:growl id="messages" showDetail="true"/>
+            <ui:define name="content">
+                <h:form id="main" enctype="multipart/form-data">
+                    <p:growl id="messages" showDetail="true"/>
 
-            <p:toolbar>
-                <p:toolbarGroup>
-                    <p:commandButton value="New" icon="pi pi-plus" actionListener="#{courseBean.openNew}"
-                                     update=":dialogs:manage-courses-content"
-                                     oncomplete="PF('manageCoursesDialog').show()"
-                                     styleClass="ui-button-success" style="margin-right: .5rem">
-                        <p:resetInput target=":dialogs:manage-courses-content"/>
-                    </p:commandButton>
-                    <p:commandButton id="delete-courses-button" value="#{courseBean.deleteButtonMessage}"
-                                     icon="pi pi-trash" actionListener="#{courseBean.deleteSelectedCourses}"
-                                     styleClass="ui-button-danger" disabled="#{!courseBean.hasSelectedCourses()}"
-                                     update="@this">
-                        <p:confirm header="Confirmation" message="Eliminar os cursos selecionados?"
-                                   icon="pi pi-exclamation-triangle"/>
-                    </p:commandButton>
-                </p:toolbarGroup>
+                    <p:toolbar>
+                        <p:toolbarGroup>
+                            <p:commandButton value="New" icon="pi pi-plus" actionListener="#{courseBean.openNew}"
+                                             update=":dialogs:manage-courses-content"
+                                             oncomplete="PF('manageCoursesDialog').show()"
+                                             styleClass="ui-button-success" style="margin-right: .5rem">
+                                <p:resetInput target=":dialogs:manage-courses-content"/>
+                            </p:commandButton>
+                            <p:commandButton id="delete-courses-button" value="#{courseBean.deleteButtonMessage}"
+                                             icon="pi pi-trash" actionListener="#{courseBean.deleteSelectedCourses}"
+                                             styleClass="ui-button-danger" disabled="#{!courseBean.hasSelectedCourses()}"
+                                             update="@this">
+                                <p:confirm header="Confirmation" message="Eliminar os cursos selecionados?"
+                                           icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
+                        </p:toolbarGroup>
 
-                <p:toolbarGroup align="right">
-                    <p:commandButton value="Recarregar" icon="pi pi-refresh" styleClass="ui-button-primary"
-                                     ajax="false" actionListener="#{courseBean.refreshCourses()}"/>
-                    <p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false"
-                                     actionListener="#{courseBean.exportUnavailable}">
-                    </p:commandButton>
-                </p:toolbarGroup>
-            </p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Recarregar" icon="pi pi-refresh" styleClass="ui-button-primary"
+                                             ajax="false" actionListener="#{courseBean.refreshCourses()}"/>
+                            <p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false"
+                                             actionListener="#{courseBean.exportUnavailable}">
+                            </p:commandButton>
+                        </p:toolbarGroup>
+                    </p:toolbar>
 
-            <p:dataTable id="dt-courses" widgetVar="dtCourses" var="course" value="#{courseBean.courses}"
-                         reflow="true" styleClass="courses-table" selection="#{courseBean.selectedCourses}"
-                         rowKey="#{course.code}" paginator="true" rows="10" selectionRowMode="add"
-                         paginatorPosition="bottom">
-                <f:facet name="header">
-                    <div class="course-table-header">
-                        <span style="font-weight: bold">CURSOS</span>
-                        <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                    <p:dataTable id="dt-courses" widgetVar="dtCourses" var="course" value="#{courseBean.courses}"
+                                 reflow="true" styleClass="courses-table" selection="#{courseBean.selectedCourses}"
+                                 rowKey="#{course.code}" paginator="true" rows="10" selectionRowMode="add"
+                                 paginatorPosition="bottom">
+                        <f:facet name="header">
+                            <div class="course-table-header">
+                                <span style="font-weight: bold">CURSOS</span>
+                                <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
                                     <p:inputText id="globalFilter" onkeyup="PF('dtCourses').filter()"
                                                  placeholder="Pesquisar"/>
                                 </span>
-                    </div>
-                </f:facet>
-
-                <p:ajax event="rowSelect" update=":main:delete-courses-button"/>
-                <p:ajax event="rowUnselect" update=":main:delete-courses-button"/>
-                <p:ajax event="rowSelectCheckbox" update=":main:delete-courses-button"/>
-                <p:ajax event="rowUnselectCheckbox" update=":main:delete-courses-button"/>
-                <p:ajax event="toggleSelect" update=":main:delete-courses-button"/>
-
-                <p:column selectionMode="multiple" exportable="false"/>
-
-                <p:column headerText="Código" sortBy="#{course.code}" filterBy="#{course.code}">
-                    <h:outputText value="#{course.code}"/>
-                </p:column>
-                <p:column headerText="Nome" sortBy="#{course.name}" filterBy="#{course.name}">
-                    <h:outputText value="#{course.name}"/>
-                </p:column>
-                <p:column headerText="Preço" sortBy="#{course.price}">
-                    <h:outputText value="#{course.price eq 0 ? 'Grátis' : course.price}" style="font-weight: 700">
-                        <f:convertNumber locale="pt_AO" type="currency"/>
-                    </h:outputText>
-                </p:column>
-
-                <p:column exportable="false" ariaHeaderText="Actions" style="gap: 1rem">
-                    <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-courses-content"
-                                     oncomplete="PF('manageCoursesDialog').show()"
-                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
-                        <f:setPropertyActionListener value="#{course}" target="#{courseBean.selectedCourse}"/>
-                        <p:resetInput target=":dialogs:manage-courses-content"/>
-                    </p:commandButton>
-                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
-                                     process="@this"
-                                     oncomplete="PF('deleteCourseDialog').show()">
-                        <f:setPropertyActionListener value="#{course}" target="#{courseBean.selectedCourse}"/>
-                    </p:commandButton>
-                </p:column>
-
-            </p:dataTable>
-
-        </h:form>
-
-        <h:form id="dialogs">
-            <p:dialog header="Detalhes do Curso" showEffect="fade" modal="true" widgetVar="manageCoursesDialog"
-                      responsive="true">
-                <p:outputPanel id="manage-courses-content" class="ui-fluid">
-                    <p:outputPanel rendered="#{not empty courseBean.selectedCourse}">
-                        <div class="field">
-                            <p:outputLabel for="name">Nome</p:outputLabel>
-                            <p:inputText id="name" value="#{courseBean.selectedCourse.name}" required="true"/>
-                        </div>
-                        <div class="formgrid grid">
-                            <div class="field col">
-                                <p:outputLabel for="price">Preço</p:outputLabel>
-                                <p:inputNumber id="price" value="#{courseBean.selectedCourse.price}" symbol=" Kz"
-                                               symbolPosition="s" decimalSeparator="." thousandSeparator=","/>
                             </div>
-                        </div>
-                    </p:outputPanel>
-                </p:outputPanel>
+                        </f:facet>
 
-                <f:facet name="footer">
-                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{courseBean.saveCourse}"
-                                     update="manage-courses-content" process="manage-courses-content @this"/>
-                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCoursesDialog').hide()"
-                                     class="ui-button-secondary" type="button"/>
-                </f:facet>
-            </p:dialog>
+                        <p:ajax event="rowSelect" update=":main:delete-courses-button"/>
+                        <p:ajax event="rowUnselect" update=":main:delete-courses-button"/>
+                        <p:ajax event="rowSelectCheckbox" update=":main:delete-courses-button"/>
+                        <p:ajax event="rowUnselectCheckbox" update=":main:delete-courses-button"/>
+                        <p:ajax event="toggleSelect" update=":main:delete-courses-button"/>
 
-            <p:confirmDialog widgetVar="deleteCourseDialog" showEffect="fade" width="300"
-                             message="Delete the product?" header="Confirm" severity="warn">
-                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{courseBean.deleteCourse}"
-                                 process="@this" update=":main:delete-courses-button"
-                                 oncomplete="PF('deleteCourseDialog').hide()"/>
-                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                 onclick="PF('deleteCourseDialog').hide()"/>
-            </p:confirmDialog>
+                        <p:column selectionMode="multiple" exportable="false"/>
 
-            <p:confirmDialog global="true" showEffect="fade" width="300">
-                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                 icon="pi pi-times"/>
-            </p:confirmDialog>
+                        <p:column headerText="Código" sortBy="#{course.code}" filterBy="#{course.code}" filterStyle="display: none">
+                            <h:outputText value="#{course.code}"/>
+                        </p:column>
+                        <p:column headerText="Nome" sortBy="#{course.name}" filterBy="#{course.name}" filterStyle="display: none">
+                            <h:outputText value="#{course.name}"/>
+                        </p:column>
+                        <p:column headerText="Preço" sortBy="#{course.price}" filterStyle="display: none">
+                            <h:outputText value="#{course.price eq 0 ? 'Grátis' : course.price}" style="font-weight: 700">
+                                <f:convertNumber locale="pt_AO" type="currency"/>
+                            </h:outputText>
+                        </p:column>
 
-        </h:form>
-    </ui:define>
+                        <p:column exportable="false" ariaHeaderText="Actions" style="gap: 1rem">
+                            <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-courses-content"
+                                             oncomplete="PF('manageCoursesDialog').show()"
+                                             styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                <f:setPropertyActionListener value="#{course}" target="#{courseBean.selectedCourse}"/>
+                                <p:resetInput target=":dialogs:manage-courses-content"/>
+                            </p:commandButton>
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                             process="@this"
+                                             oncomplete="PF('deleteCourseDialog').show()">
+                                <f:setPropertyActionListener value="#{course}" target="#{courseBean.selectedCourse}"/>
+                            </p:commandButton>
+                        </p:column>
 
-</ui:composition>
+                    </p:dataTable>
 
-</body>
+                </h:form>
+
+                <h:form id="dialogs">
+                    <p:dialog header="Detalhes do Curso" showEffect="fade" modal="true" widgetVar="manageCoursesDialog"
+                              responsive="true">
+                        <p:outputPanel id="manage-courses-content" class="ui-fluid">
+                            <p:outputPanel rendered="#{not empty courseBean.selectedCourse}">
+                                <div class="field">
+                                    <p:outputLabel for="name">Nome</p:outputLabel>
+                                    <p:inputText id="name" value="#{courseBean.selectedCourse.name}" required="true"/>
+                                </div>
+                                <div class="formgrid grid">
+                                    <div class="field col">
+                                        <p:outputLabel for="price">Preço</p:outputLabel>
+                                        <p:inputNumber id="price" value="#{courseBean.selectedCourse.price}" symbol=" Kz"
+                                                       symbolPosition="s" decimalSeparator="." thousandSeparator=","/>
+                                    </div>
+                                </div>
+                            </p:outputPanel>
+                        </p:outputPanel>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{courseBean.saveCourse}"
+                                             update="manage-courses-content" process="manage-courses-content @this"/>
+                            <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCoursesDialog').hide()"
+                                             class="ui-button-secondary" type="button"/>
+                        </f:facet>
+                    </p:dialog>
+
+                    <p:confirmDialog widgetVar="deleteCourseDialog" showEffect="fade" width="300"
+                                     message="Delete the product?" header="Confirm" severity="warn">
+                        <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{courseBean.deleteCourse}"
+                                         process="@this" update=":main:delete-courses-button"
+                                         oncomplete="PF('deleteCourseDialog').hide()"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                         onclick="PF('deleteCourseDialog').hide()"/>
+                    </p:confirmDialog>
+
+                    <p:confirmDialog global="true" showEffect="fade" width="300">
+                        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                         icon="pi pi-times"/>
+                    </p:confirmDialog>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
 </html>
