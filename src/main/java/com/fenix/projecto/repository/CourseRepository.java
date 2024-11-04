@@ -7,7 +7,6 @@ import jakarta.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Stateless
 public class CourseRepository {
@@ -17,9 +16,12 @@ public class CourseRepository {
 
     public List<Course> findAll() {
         return em.createNamedQuery("Course.findAll", Course.class)
-                .getResultStream()
-                .filter((Course curso) -> !curso.isDeleted())
-                .collect(Collectors.toList());
+                .getResultList();
+    }
+
+    public List<Course> findAllDeleted() {
+        return em.createNamedQuery("Course.findAllDeleted", Course.class)
+                .getResultList();
     }
 
     public Optional<Course> findById(Integer id) {
@@ -46,6 +48,11 @@ public class CourseRepository {
     public void delete(Course curso) {
         curso.setDeleted(true);
         update(curso);
+    }
+
+    public void restore(Course course) {
+        course.setDeleted(false);
+        update(course);
     }
 
 }

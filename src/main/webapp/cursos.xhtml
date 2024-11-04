@@ -27,14 +27,20 @@
                                              icon="pi pi-trash" actionListener="#{courseBean.deleteSelectedCourses}"
                                              styleClass="ui-button-danger" disabled="#{!courseBean.hasSelectedCourses()}"
                                              update="@this">
-                                <p:confirm header="Confirmation" message="Eliminar os cursos selecionados?"
+                                <p:confirm header="Confirmação" message="Eliminar os cursos selecionados?"
                                            icon="pi pi-exclamation-triangle"/>
                             </p:commandButton>
                         </p:toolbarGroup>
 
                         <p:toolbarGroup align="right">
                             <p:commandButton icon="pi pi-refresh" styleClass="ui-button-secondary rounded-button"
-                                             ajax="false" actionListener="#{courseBean.refreshCourses()}"/>
+                                             ajax="false" actionListener="#{courseBean.refreshCourses()}"
+                                             style="margin-right: .5rem"/>
+                            <p:commandButton id="show-deleted-courses-button" icon="pi pi-trash" styleClass="rounded-button"
+                                             actionListener="#{courseBean.loadDeletedCourses}"
+                                             update=":dialogs:dt-deleted-courses"
+                                             oncomplete="PF('manageDeletedCoursesDialog').show()" />
+                            <p:tooltip for="show-deleted-courses-button" value="Ver os cursos eliminados"/>
                         </p:toolbarGroup>
                     </p:toolbar>
 
@@ -117,8 +123,33 @@
                         </f:facet>
                     </p:dialog>
 
+                    <p:dialog header="Cursos eliminados" widgetVar="manageDeletedCoursesDialog"
+                              showEffect="fade" hideEffect="fade" responsive="true"
+                              fitViewport="true" height="75vh" width="75vw">
+                        <p:dataTable id="dt-deleted-courses" widgetVar="dtDeletedCourses" 
+                                     var="course" value="#{courseBean.deletedCourses}"
+                                     selection="#{courseBean.selectedCourse}" rows="10" reflow="true"
+                                     selectionRowMode="new" rowKey="#{course.code}"
+                                     paginator="true" paginatorPosition="bottom">
+                            <p:column headerText="Código" sortBy="#{course.code}" filterBy="#{course.code}" filterStyle="display: none">
+                                <h:outputText value="#{course.code}"/>
+                            </p:column>
+                            <p:column headerText="Nome" sortBy="#{course.name}" filterBy="#{course.name}" filterStyle="display: none">
+                                <h:outputText value="#{course.name}"/>
+                            </p:column>
+                            <p:column headerText="Preço" sortBy="#{course.price}" filterStyle="display: none">
+                                <h:outputText value="#{course.price eq 0 ? 'Grátis' : course.price}" style="font-weight: 700">
+                                    <f:convertNumber locale="pt_AO" type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                        <p:contextMenu for="dt-deleted-courses">
+                            <p:menuitem value="Restaurar" actionListener="#{courseBean.restoreCourse}"/>
+                        </p:contextMenu>
+                    </p:dialog>
+
                     <p:confirmDialog widgetVar="deleteCourseDialog" showEffect="fade" width="300"
-                                     message="Delete the product?" header="Confirm" severity="warn">
+                                     message="Tem a certeza de que quer eliminar este curso?" header="Confirmar exclusão" severity="warn">
                         <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{courseBean.deleteCourse}"
                                          process="@this" update=":main:delete-courses-button"
                                          oncomplete="PF('deleteCourseDialog').hide()"/>

@@ -18,21 +18,23 @@ public class CourseBean implements Serializable {
 
     @Inject
     private CourseRepository repo;
-    private List<Course> courses;
     private Course selectedCourse;
+    private List<Course> courses;
     private List<Course> selectedCourses;
+    private List<Course> deletedCourses;
 
     @PostConstruct
     public void init() {
         courses = repo.findAll();
     }
 
-    public CourseRepository getRepo() {
-        return repo;
+    //<editor-fold desc="Getters and Setters">
+    public Course getSelectedCourse() {
+        return selectedCourse;
     }
 
-    public void setRepo(CourseRepository repo) {
-        this.repo = repo;
+    public void setSelectedCourse(Course selectedCourse) {
+        this.selectedCourse = selectedCourse;
     }
 
     public List<Course> getCourses() {
@@ -43,14 +45,6 @@ public class CourseBean implements Serializable {
         this.courses = courses;
     }
 
-    public Course getSelectedCourse() {
-        return selectedCourse;
-    }
-
-    public void setSelectedCourse(Course selectedCourse) {
-        this.selectedCourse = selectedCourse;
-    }
-
     public List<Course> getSelectedCourses() {
         return selectedCourses;
     }
@@ -58,6 +52,15 @@ public class CourseBean implements Serializable {
     public void setSelectedCourses(List<Course> selectedCourses) {
         this.selectedCourses = selectedCourses;
     }
+
+    public List<Course> getDeletedCourses() {
+        return deletedCourses;
+    }
+
+    public void setDeletedCourses(List<Course> deletedCourses) {
+        this.deletedCourses = deletedCourses;
+    }
+    //</editor-fold>
 
     public void openNew() {
         this.selectedCourse = new Course();
@@ -87,7 +90,9 @@ public class CourseBean implements Serializable {
     }
 
     public void deleteCourse() {
-        selectedCourses.remove(selectedCourse);
+        if (selectedCourses != null) {
+            selectedCourses.remove(selectedCourse);
+        }
         repo.delete(selectedCourse);
         loadCourses();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Curso eliminado"));
@@ -115,11 +120,15 @@ public class CourseBean implements Serializable {
         PrimeFaces.current().executeScript("PF('dtCourses').clearFilters()");
     }
 
-    public void exportUnavailable() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
-                FacesMessage.SEVERITY_WARN,
-                "Exportar dados",
-                "Esta funcionalidade ainda não está disponivel."));
+    public void loadDeletedCourses() {
+        deletedCourses = repo.findAllDeleted();
     }
 
+    public void restoreCourse() {
+        repo.restore(selectedCourse);
+        loadCourses();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Curso restaurado com sucesso"));
+        PrimeFaces.current().executeScript("PF('manageDeletedCoursesDialog').hide()");
+        PrimeFaces.current().ajax().update(":main:messages", ":main:dt-courses");
+    }
 }

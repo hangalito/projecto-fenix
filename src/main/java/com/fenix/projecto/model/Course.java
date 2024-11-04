@@ -16,7 +16,8 @@ import java.util.Objects;
     @NamedQuery(name = "Course.findAll", query = "SELECT c FROM Course c where c.deleted = false"),
     @NamedQuery(name = "Course.findByCode", query = "SELECT c FROM Course c WHERE c.code = :code and c.deleted = false"),
     @NamedQuery(name = "Course.findByNome", query = "SELECT c FROM Course c WHERE c.name = :name and c.deleted = false"),
-    @NamedQuery(name = "Course.findByPreco", query = "SELECT c FROM Course c WHERE c.price = :price and c.deleted = false")
+    @NamedQuery(name = "Course.findByPreco", query = "SELECT c FROM Course c WHERE c.price = :price and c.deleted = false"),
+    @NamedQuery(name = "Course.findAllDeleted", query = "SELECT c FROM Course c WHERE c.deleted = true")
 })
 public class Course implements Serializable, Comparable<Course> {
 
