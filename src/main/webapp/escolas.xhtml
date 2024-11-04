@@ -41,6 +41,16 @@
                     <p:dataTable id="dt-schools" widgetVar="dtSchools" value="${schoolBean.schools}" var="school"
                                  selectionMode="multiple" selection="${schoolBean.selectedSchools}" rowKey="${school.code}"
                                  reflow="true" selectionRowMode="add" rows="10" paginator="true" paginatorPosition="bottom">
+                        
+                        <f:facet name="header">
+                            <div class="school-table-header">
+                                <span style="font-weight: bold">ESCOLAS</span>
+                                <span class="filter-container ui-input-icon-left">
+                                    <i class="pi pi-search"/>
+                                    <p:inputText id="globalFilter" onkeyup="PF('dtSchools').filter()" placeholder="Pesquisar"/>
+                                </span>
+                            </div>
+                        </f:facet>
 
                         <p:ajax event="rowSelect" update=":main:delete-school-button"/>
                         <p:ajax event="rowUnselect" update=":main:delete-school-button"/>
