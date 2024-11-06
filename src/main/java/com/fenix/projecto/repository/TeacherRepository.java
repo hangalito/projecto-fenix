@@ -33,6 +33,17 @@ public class TeacherRepository {
                 .findFirst();
     }
 
+    public Optional<Teacher> findByNameAndSurname(String fullName) {
+        assert fullName.split(" ").length == 2 : "Name and surname expected";
+        String name = fullName.split(" ")[0];
+        String surname = fullName.split(" ")[1];
+        return em.createNamedQuery("Teacher.findByNameAndSurname", Teacher.class)
+                .setParameter("name", name)
+                .setParameter("surname", surname)
+                .getResultStream()
+                .findFirst();
+    }
+
     public Teacher save(Teacher e) {
         e.setDeleted(false);
         em.persist(e);

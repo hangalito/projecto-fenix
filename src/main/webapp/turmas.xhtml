@@ -1,14 +1,110 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="pt-AO" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="jakarta.faces.facelets">
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
 
     <body>
 
         <ui:composition template="./template/main.xhtml">
 
             <ui:define name="content">
-                turmas
+                <h:form id="main">
+                    <p:growl id="messages" showDetail="true"/>
+
+                    <p:toolbar>
+                        <p:toolbarGroup>
+                            <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{classBean.openNew}"
+                                             update=":dialogs:manage-classes-content"
+                                             oncomplete="PF('manageClassesDialog').show()"
+                                             styleClass="ui-button-success" style="margin-right: .5rem">
+                                <p:resetInput target=":dialogs:manage-classes-content"/>
+                            </p:commandButton>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+
+                    <p:dataTable id="dt-classes" widgetVar="dtClasses" var="clss"
+                                 value="#{classBean.classes}" selectionRowMode="add"
+                                 rowKey="#{clss.code}" reflow="true" selectionMode="multiple"
+                                 selection="#{classBean.selectedClasses}"
+                                 paginatorPosition="bottom" paginator="true" rows="10">
+                        <f:facet name="header">
+                            <p>TURMAS</p>
+                            <p:inputText type="search" onkeyup="PF('dtClasses').filter()" placeholder="Pesquisar"/>
+                        </f:facet>
+
+                        <p:column headerText="Código" sortBy="#{clss.code}" filterBy="#{clss.code}" 
+                                  filterStyle="display: none" ariaHeaderText="Código">
+                            <h:outputText value="#{clss.code}"/>
+                        </p:column>
+                        <p:column headerText="Nome" sortBy="#{clss.name}" filterBy="#{clss.name}"
+                                  filterStyle="display: none">
+                            <h:outputText value="#{clss.name}"/>
+                        </p:column>
+                        <p:column headerText="Data de Início" sortBy="#{clss.startDate}" filterBy="#{clss.startDate}"
+                                  filterStyle="display: none">
+                            <h:outputText value="#{clss.startDate}">
+                                <f:convertDateTime type="date" locale="pt_AO"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Nº. Alunos">
+                            <h:outputText value="#{classBean.numberOfStudents(clss)}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <h:form id="dialogs">
+                    <p:dialog id="manage-classes-dialog" widgetVar="manageClassesDialog"  header="Detalhes da Turma"
+                              fitViewport="true" maximizable="true" modal="true">
+                        <p:outputPanel id="manage-classes-content" class="ui-fluid">
+                            <p:outputPanel rendered="#{not empty classBean.selectedClass}">
+                                <div class="field">
+                                    <p:outputLabel for="class-name" value="Nome (Opcional)"/>
+                                    <p:inputText id="class-name" value="#{classBean.selectedClass.name}" 
+                                                 placeholder="Nome da turma"
+                                                 onkeyup="confirm(this.label)" />
+                                    <p:message for="class-name" showDetail="false" showSummary="true"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="start-date" value="Data de início"/>
+                                    <p:inputText id="start-date" type="date" value="#{classBean.startDate}" 
+                                                 required="true" placeholder="Data de início"/>
+                                    <p:message for="start-date" showDetail="false" showSummary="true"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="end-date" value="Data de conclusão"/>
+                                    <p:inputText id="end-date" type="date" value="#{classBean.endDate}"
+                                                 placeholder="Data de conclusão"/>
+                                    <p:message for="end-date" showDetail="false" showSummary="true"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="complete" value="Marcar como concluída"/>
+                                    <p:spacer width="1rem"/>
+                                    <p:selectBooleanCheckbox id="complete" value="#{classBean.selectedClass.complete}"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="class-teacher" value="Professor responsável"/>
+                                    <p:selectOneMenu id="class-teacher" value="#{classBean.selectedClass.teacher}" 
+                                                     converter="teacherConverter">
+                                        <f:selectItem itemValue="#{null}" itemLabel="Selecione um professor"/>
+                                        <f:selectItems value="#{teacherBean.teachers}" var="teacher"
+                                                       itemValue="#{teacher}"
+                                                       itemLabel="#{teacher.name} #{teacher.surname}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                            </p:outputPanel>
+                        </p:outputPanel>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{classBean.saveClass}"
+                                             update="manage-classes-content" process="manage-classes-content @this"/>
+                            <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageClassesDialog').hide()"
+                                             class="ui-button-secondary" type="button"/>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
             </ui:define>
 
         </ui:composition>

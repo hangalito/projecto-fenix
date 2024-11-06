@@ -3,10 +3,9 @@ package com.fenix.projecto.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
-
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,8 +17,7 @@ import java.util.Objects;
 })
 public class Class implements Serializable, Comparable<Class> {
 
-    @Serial
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +44,20 @@ public class Class implements Serializable, Comparable<Class> {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Teacher teacher;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumns(value = {
+        @JoinColumn(name = "codigo_aluno", referencedColumnName = "codigo_aluno", table = "turma_aluno"),
+        @JoinColumn(name = "codigo_turma", referencedColumnName = "codigo_turma", table = "turma_aluno")
+    })
+    @JoinTable(name = "turma_aluno")
+    private List<Student> students;
+
     public Class() {
+    }
+
+    //<editor-fold desc="Getters and Setters">
+    public Integer getCode() {
+        return code;
     }
 
     public void setCode(Integer code) {
@@ -93,15 +104,21 @@ public class Class implements Serializable, Comparable<Class> {
         this.teacher = teacher;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+    //</editor-fold>
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.code);
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + Objects.hashCode(this.startDate);
-        hash = 29 * hash + Objects.hashCode(this.endDate);
-        hash = 29 * hash + Objects.hashCode(this.complete);
-        hash = 29 * hash + Objects.hashCode(this.teacher);
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.code);
+        hash = 83 * hash + Objects.hashCode(this.startDate);
+        hash = 83 * hash + Objects.hashCode(this.teacher);
         return hash;
     }
 
@@ -117,32 +134,18 @@ public class Class implements Serializable, Comparable<Class> {
             return false;
         }
         final Class other = (Class) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
         if (!Objects.equals(this.code, other.code)) {
             return false;
         }
         if (!Objects.equals(this.startDate, other.startDate)) {
             return false;
         }
-        if (!Objects.equals(this.endDate, other.endDate)) {
-            return false;
-        }
-        if (!Objects.equals(this.complete, other.complete)) {
-            return false;
-        }
         return Objects.equals(this.teacher, other.teacher);
     }
 
     @Override
-    public String toString() {
-        return "Class{" + "code=" + code + ", name=" + name + ", startDate=" + startDate + ", endDate=" + endDate + ", complete=" + complete + ", teacher=" + teacher + '}';
-    }
-
-    @Override
     public int compareTo(Class o) {
-        return this.startDate.compareTo(o.startDate);
+        return startDate.compareTo(o.startDate);
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Stateless
-public class TurmaRepository {
+public class ClassRepository {
 
     @PersistenceContext(unitName = "projecto_fenix_pu")
     private EntityManager em;
@@ -22,12 +22,12 @@ public class TurmaRepository {
     }
 
     public Optional<Class> findById(Integer id) {
-        return em.createNamedQuery("Class.findByCodige", Class.class)
+        return em.createNamedQuery("Class.findByCode", Class.class)
                 .setParameter("code", id)
                 .getResultStream()
                 .findFirst();
     }
-    
+
     public Class save(Class e) {
         em.persist(e);
         return e;
