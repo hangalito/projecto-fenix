@@ -84,7 +84,7 @@ public class Student implements Serializable, Comparable<Student> {
     @Column(name = "eliminado", nullable = false)
     private Boolean deleted;
 
-    @ManyToMany(mappedBy = "students")  // Relacionamento ManyToMany bidirecional
+    @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
     private List<Class> classes;
 
     public Student() {

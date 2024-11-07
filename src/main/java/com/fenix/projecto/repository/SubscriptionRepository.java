@@ -41,10 +41,5 @@ public class SubscriptionRepository {
     public Subscription update(Subscription e) {
         return em.merge(e);
     }
-    
-    public void delete(Subscription e) {
-        e.setDeleted(true);
-        update(e);
-    }
 
 }

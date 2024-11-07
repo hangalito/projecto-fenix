@@ -46,12 +46,10 @@ public class Subscription implements Serializable, Comparable<Subscription> {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Class classRoom;
 
-    @Column(name = "eliminado")
-    private Boolean deleted;
-
     public Subscription() {
     }
 
+    //<editor-fold desc="Getters and Setters">
     public SubscriptionPK getSubscriptionPK() {
         return subscriptionPk;
     }
@@ -107,26 +105,14 @@ public class Subscription implements Serializable, Comparable<Subscription> {
     public void setClassRoom(Class classRoom) {
         this.classRoom = classRoom;
     }
+    //</editor-fold>
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
+    //<editor-fold desc="HashCode, Equals, toString, and other implementations">
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 31 * hash + Objects.hashCode(this.subscriptionPk);
-        hash = 31 * hash + Objects.hashCode(this.date);
-        hash = 31 * hash + Objects.hashCode(this.payment);
-        hash = 31 * hash + Objects.hashCode(this.pending);
-        hash = 31 * hash + Objects.hashCode(this.student);
-        hash = 31 * hash + Objects.hashCode(this.course);
-        hash = 31 * hash + Objects.hashCode(this.classRoom);
-        hash = 31 * hash + Objects.hashCode(this.deleted);
+        int hash = 3;
+        hash = 71 * hash + Objects.hashCode(this.subscriptionPk);
+        hash = 71 * hash + Objects.hashCode(this.date);
         return hash;
     }
 
@@ -145,35 +131,18 @@ public class Subscription implements Serializable, Comparable<Subscription> {
         if (!Objects.equals(this.subscriptionPk, other.subscriptionPk)) {
             return false;
         }
-        if (!Objects.equals(this.date, other.date)) {
-            return false;
-        }
-        if (!Objects.equals(this.payment, other.payment)) {
-            return false;
-        }
-        if (!Objects.equals(this.pending, other.pending)) {
-            return false;
-        }
-        if (!Objects.equals(this.student, other.student)) {
-            return false;
-        }
-        if (!Objects.equals(this.course, other.course)) {
-            return false;
-        }
-        if (!Objects.equals(this.classRoom, other.classRoom)) {
-            return false;
-        }
-        return Objects.equals(this.deleted, other.deleted);
+        return Objects.equals(this.date, other.date);
     }
 
     @Override
     public String toString() {
-        return "Subscription{" + "date=" + date + ", payment=" + payment + ", pending=" + pending + ", student=" + student + ", course=" + course + ", classRoom=" + classRoom + ", deleted=" + deleted + '}';
+        return "Subscription{" + "subscriptionPk=" + subscriptionPk + ", date=" + date + ", payment=" + payment + ", pending=" + pending + ", student=" + student + ", course=" + course + ", classRoom=" + classRoom + '}';
     }
 
     @Override
     public int compareTo(Subscription o) {
         return date.compareTo(o.date);
     }
+    //</editor-fold>
 
 }
