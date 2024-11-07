@@ -17,7 +17,7 @@ import java.util.Objects;
 @NamedQueries({
     @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s where s.deleted = false"),
     @NamedQuery(name = "Student.findByCode", query = "SELECT s FROM Student s WHERE s.code = :code and s.deleted = false"),
-    @NamedQuery(name="Student.findAllDeleted",query = "SELECT s FROM Student s WHERE s.deleted = true")
+    @NamedQuery(name = "Student.findAllDeleted", query = "SELECT s FROM Student s WHERE s.deleted = true")
 })
 public class Student implements Serializable, Comparable<Student> {
 
@@ -84,9 +84,13 @@ public class Student implements Serializable, Comparable<Student> {
     @Column(name = "eliminado", nullable = false)
     private Boolean deleted;
 
+    @ManyToMany(mappedBy = "students")  // Relacionamento ManyToMany bidirecional
+    private List<Class> classes;
+
     public Student() {
     }
 
+    //<editor-fold desc="Getters and Setters">
     public Integer getCode() {
         return code;
     }
@@ -199,6 +203,16 @@ public class Student implements Serializable, Comparable<Student> {
         this.deleted = deleted;
     }
 
+    public List<Class> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<Class> classes) {
+        this.classes = classes;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="HashCode, Equals and other implementations">
     @Override
     public int hashCode() {
         int hash = 7;
@@ -282,5 +296,6 @@ public class Student implements Serializable, Comparable<Student> {
     public int compareTo(Student o) {
         return name.compareTo(o.name);
     }
+    //</editor-fold>
 
 }

@@ -18,7 +18,8 @@ import java.util.Objects;
     @NamedQuery(name = "Teacher.findByName", query = "SELECT t FROM Teacher t WHERE t.name = :name"),
     @NamedQuery(name = "Teacher.findBySurname", query = "SELECT t FROM Teacher t WHERE t.surname = :surname"),
     @NamedQuery(name = "Teacher.findByBirthdate", query = "SELECT t FROM Teacher t WHERE t.birthdate = :birthdate"),
-    @NamedQuery(name = "Teacher.findAllDeleted", query = "SELECT t FROM Teacher t WHERE t.deleted = true")
+    @NamedQuery(name = "Teacher.findAllDeleted", query = "SELECT t FROM Teacher t WHERE t.deleted = true"),
+    @NamedQuery(name = "Teacher.findByNameAndSurname", query = "SELECT t FROM Teacher t WHERE t.name = :name AND t.surname = :surname")
 })
 public class Teacher implements Serializable, Comparable<Teacher> {
 

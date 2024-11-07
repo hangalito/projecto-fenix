@@ -44,12 +44,12 @@ public class Class implements Serializable, Comparable<Class> {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Teacher teacher;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumns(value = {
-        @JoinColumn(name = "codigo_aluno", referencedColumnName = "codigo_aluno", table = "turma_aluno"),
-        @JoinColumn(name = "codigo_turma", referencedColumnName = "codigo_turma", table = "turma_aluno")
-    })
-    @JoinTable(name = "turma_aluno")
+    @ManyToMany
+    @JoinTable(
+        name = "turma_aluno",
+        joinColumns = @JoinColumn(name = "codigo_turma"),
+        inverseJoinColumns = @JoinColumn(name = "codigo_aluno")
+    )
     private List<Student> students;
 
     public Class() {
@@ -113,6 +113,7 @@ public class Class implements Serializable, Comparable<Class> {
     }
     //</editor-fold>
 
+    //<editor-fold desc="HasCode, Equals and other implementations">
     @Override
     public int hashCode() {
         int hash = 5;
@@ -121,7 +122,6 @@ public class Class implements Serializable, Comparable<Class> {
         hash = 83 * hash + Objects.hashCode(this.teacher);
         return hash;
     }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -147,5 +147,6 @@ public class Class implements Serializable, Comparable<Class> {
     public int compareTo(Class o) {
         return startDate.compareTo(o.startDate);
     }
+    //</editor-fold>
 
 }

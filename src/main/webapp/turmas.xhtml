@@ -63,8 +63,7 @@
                                 <div class="field">
                                     <p:outputLabel for="class-name" value="Nome (Opcional)"/>
                                     <p:inputText id="class-name" value="#{classBean.selectedClass.name}" 
-                                                 placeholder="Nome da turma"
-                                                 onkeyup="confirm(this.label)" />
+                                                 placeholder="Nome da turma"/>
                                     <p:message for="class-name" showDetail="false" showSummary="true"/>
                                 </div>
                                 <div class="field">
@@ -80,11 +79,6 @@
                                     <p:message for="end-date" showDetail="false" showSummary="true"/>
                                 </div>
                                 <div class="field">
-                                    <p:outputLabel for="complete" value="Marcar como concluída"/>
-                                    <p:spacer width="1rem"/>
-                                    <p:selectBooleanCheckbox id="complete" value="#{classBean.selectedClass.complete}"/>
-                                </div>
-                                <div class="field">
                                     <p:outputLabel for="class-teacher" value="Professor responsável"/>
                                     <p:selectOneMenu id="class-teacher" value="#{classBean.selectedClass.teacher}" 
                                                      converter="teacherConverter">
@@ -93,6 +87,13 @@
                                                        itemValue="#{teacher}"
                                                        itemLabel="#{teacher.name} #{teacher.surname}"/>
                                     </p:selectOneMenu>
+                                    <p:message for="class-teacher" showDetail="false" showSummary="true"/>
+                                </div>
+                                <div class="field">
+                                    <p:outputLabel for="complete" value="Marcar como concluída"/>
+                                    <p:spacer width="1rem"/>
+                                    <p:selectBooleanCheckbox id="complete" value="#{classBean.selectedClass.complete}"/>
+                                    <p:message for="complete" showDetail="false" showSummary="true"/>
                                 </div>
                             </p:outputPanel>
                         </p:outputPanel>
