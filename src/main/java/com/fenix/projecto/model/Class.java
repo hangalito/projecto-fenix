@@ -46,9 +46,9 @@ public class Class implements Serializable, Comparable<Class> {
 
     @ManyToMany
     @JoinTable(
-        name = "turma_aluno",
-        joinColumns = @JoinColumn(name = "codigo_turma"),
-        inverseJoinColumns = @JoinColumn(name = "codigo_aluno")
+            name = "turma_aluno",
+            joinColumns = @JoinColumn(name = "codigo_turma"),
+            inverseJoinColumns = @JoinColumn(name = "codigo_aluno")
     )
     private List<Student> students;
 
@@ -122,6 +122,7 @@ public class Class implements Serializable, Comparable<Class> {
         hash = 83 * hash + Objects.hashCode(this.teacher);
         return hash;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -141,6 +142,18 @@ public class Class implements Serializable, Comparable<Class> {
             return false;
         }
         return Objects.equals(this.teacher, other.teacher);
+    }
+
+    @Override
+    public String toString() {
+        return "Class{"
+                + "code=" + code
+                + ", name=" + name
+                + ", startDate=" + startDate
+                + ", endDate=" + endDate
+                + ", complete=" + complete
+                + ", teacher=" + teacher.getName() + " " + teacher.getSurname()
+                + '}';
     }
 
     @Override

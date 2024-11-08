@@ -26,13 +26,18 @@
                     </p:toolbar>
 
                     <p:dataTable id="dt-classes" widgetVar="dtClasses" var="clss"
-                                 value="#{classBean.classes}" selectionRowMode="add"
-                                 rowKey="#{clss.code}" reflow="true" selectionMode="multiple"
-                                 selection="#{classBean.selectedClasses}"
+                                 value="#{classBean.classes}" selectionRowMode="new"
+                                 rowKey="#{clss.code}" reflow="true" selectionMode="single"
+                                 selection="#{classBean.selectedClass}"
                                  paginatorPosition="bottom" paginator="true" rows="10">
                         <f:facet name="header">
-                            <p>TURMAS</p>
-                            <p:inputText type="search" onkeyup="PF('dtClasses').filter()" placeholder="Pesquisar"/>
+                            <div class="classes-table-header">
+                                <span style="font-weight: bold">TURMAS</span>
+                                <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                                    <p:inputText id="globalFilter" onkeyup="PF('dtClasses').filter()"
+                                                 placeholder="Pesquisar"/>
+                                </span>
+                            </div>
                         </f:facet>
 
                         <p:column headerText="Código" sortBy="#{clss.code}" filterBy="#{clss.code}" 
@@ -49,10 +54,18 @@
                                 <f:convertDateTime type="date" locale="pt_AO"/>
                             </h:outputText>
                         </p:column>
+                        <p:column headerText="Professor" sortBy="#{clss.teacher.name}" 
+                                  filterBy="#{clss.teacher.name} #{clss.teacher.surname}" filterStyle="display: none">
+                            <h:outputText value="#{clss.teacher.name} #{clss.teacher.surname}"/>
+                        </p:column>
                         <p:column headerText="Nº. Alunos">
                             <h:outputText value="#{classBean.numberOfStudents(clss)}" />
                         </p:column>
                     </p:dataTable>
+                    <p:contextMenu for="dt-classes">
+                        <p:menuitem value="Ver alunos" icon="pi pi-plus"
+                                    actionListener="#{classBean.loadStudents}"/>
+                    </p:contextMenu>
                 </h:form>
 
                 <h:form id="dialogs">
@@ -103,6 +116,51 @@
                                              update="manage-classes-content" process="manage-classes-content @this"/>
                             <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageClassesDialog').hide()"
                                              class="ui-button-secondary" type="button"/>
+                        </f:facet>
+                    </p:dialog>
+
+                    <p:dialog id="pick-class-students-dialog" widgetVar="pickClassStudentsDialog" header="Selecionar alunos"
+                              width="400px" fitViewport="true" maximizable="false" modal="true" showEffect="fade" hideEffect="fade" 
+                              dynamic="true" cache="false">
+                        <p:outputPanel id="manage-class-students-content" class="ui-fluid">
+                            <p:outputPanel>
+                                <p:dataTable id="dt-pick-students" widgetVar="dtPickStudents"
+                                             value="#{classBean.availableStudents}" var="student">
+                                    <f:facet name="header">
+                                        <div class="students-table-header">
+                                            <span style="font-weight: bold">ALUNOS</span>
+                                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtPickStudents').filter()"
+                                                             placeholder="Pesquisar"/>
+                                            </span>
+                                        </div>
+                                    </f:facet>
+
+                                    <p:column filterBy="#{student.name} #{student.surname}" filterStyle="display: none">
+                                        <h:outputText value="#{student.name} #{student.surname}"/>
+                                    </p:column>
+                                    <p:column width="15%">
+                                        <p:commandButton id="unselect-student-button" rendered="#{classBean.isSelected(student)}" 
+                                                         actionListener="#{classBean.diselectStudent(student)}"
+                                                         icon="pi pi-minus" styleClass="ui-button-warning rounded-button"
+                                                         update=":dialogs:confirm-button"/>
+                                        <p:tooltip for="unselect-student-button" value="Remover da turma"/>
+                                        <p:commandButton id="select-student-button" rendered="#{not classBean.isSelected(student)}"
+                                                         actionListener="#{classBean.selectStudent(student)}"
+                                                         icon="pi pi-plus" styleClass="ui-button-success rounded-button"
+                                                         update=":dialogs:confirm-button"/>
+                                        <p:tooltip for="select-student-button" value="Adicionar à turma"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>
+                        </p:outputPanel>
+
+                        <f:facet name="footer">
+                            <p:commandButton id="confirm-button" value="Salvar" icon="pi pi-check"
+                                             disabled="#{not classBean.canSave()}"
+                                             actionListener="#{classBean.addStudents}"/>
+                            <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="ui-button-secondary"
+                                             oncomplete="PF('pickClassStudentsDialog').hide()"/>
                         </f:facet>
                     </p:dialog>
                 </h:form>

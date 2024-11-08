@@ -289,7 +289,22 @@ public class Student implements Serializable, Comparable<Student> {
 
     @Override
     public String toString() {
-        return "Student{" + "code=" + code + ", name=" + name + ", surname=" + surname + ", birthdate=" + birthdate + ", telephone=" + telephone + ", email=" + email + ", address=" + address + ", neighbourhood=" + neighbourhood + ", district=" + district + ", state=" + state + ", school=" + school + ", province=" + province + ", subscriptions=" + subscriptions + ", deleted=" + deleted + '}';
+        return "Student{"
+                + "code=" + code
+                + ", name=" + name
+                + ", surname=" + surname
+                + ", birthdate=" + birthdate
+                + ", telephone=" + telephone
+                + ", email=" + email
+                + ", address=" + address
+                + ", neighbourhood=" + neighbourhood
+                + ", district=" + district
+                + ", state=" + state
+                + ", school=" + school.getName()
+                + ", province=" + province
+                + ", subscriptions=" + subscriptions
+                + ", deleted=" + deleted
+                + '}';
     }
 
     @Override
